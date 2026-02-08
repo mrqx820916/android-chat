@@ -1,0 +1,4 @@
+Microsoft Windows [版本 10.0.19045.4651]
+(c) Microsoft Corporation。保留所有权利。
+
+K:\AICODE\chat\android-chat>

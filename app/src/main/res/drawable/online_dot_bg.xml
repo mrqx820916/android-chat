@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  在线状态圆点
+  绿色=在线，灰色=离线
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="@color/success" />
+    <size
+        android:width="8dp"
+        android:height="8dp" />
+</shape>

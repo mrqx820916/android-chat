@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ========== 按钮样式 ========== -->
+    <style name="Widget.LightChat.Button" parent="Widget.Material3.Button">
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="backgroundTint">?attr/colorPrimary</item>
+        <item name="cornerRadius">20dp</item>
+    </style>
+
+    <style name="Widget.LightChat.Button.IconButton" parent="Widget.Material3.Button.IconButton">
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:minWidth">40dp</item>
+        <item name="android:minHeight">40dp</item>
+        <item name="iconSize">24dp</item>
+        <item name="iconTint">?attr/colorPrimary</item>
+    </style>
+
+    <style name="Widget.LightChat.Button.OutlinedButton" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="strokeColor">?attr/colorOutline</item>
+        <item name="cornerRadius">20dp</item>
+    </style>
+
+    <style name="Widget.LightChat.Button.TextButton" parent="Widget.Material3.Button.TextButton">
+        <item name="android:textColor">?attr/colorPrimary</item>
+    </style>
+
+    <style name="Widget.LightChat.Button.TonalButton" parent="Widget.Material3.Button.TonalButton">
+        <item name="cornerRadius">20dp</item>
+    </style>
+
+    <!-- ========== 输入框样式 ========== -->
+    <style name="Widget.LightChat.TextInputLayout.OutlinedBox" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">?attr/colorPrimary</item>
+        <item name="hintTextColor">?attr/colorOnSurfaceVariant</item>
+        <item name="boxCornerRadiusTopStart">20dp</item>
+        <item name="boxCornerRadiusTopEnd">20dp</item>
+        <item name="boxCornerRadiusBottomStart">20dp</item>
+        <item name="boxCornerRadiusBottomEnd">20dp</item>
+    </style>
+
+    <!-- ========== Material 3 组件样式 ========== -->
+    <style name="Widget.Material3.Divider" parent="Widget.Material3.MaterialDivider">
+        <item name="dividerColor">?attr/colorOutlineVariant</item>
+    </style>
+
+    <style name="Widget.Material3.ListItem" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardBackgroundColor">?attr/colorSurface</item>
+        <item name="cardCornerRadius">12dp</item>
+        <item name="cardElevation">2dp</item>
+    </style>
+
+    <!-- ========== 消息气泡样式 ========== -->
+    <style name="Widget.App.MessageBubble" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:maxWidth">260dp</item>
+        <item name="cardCornerRadius">16dp</item>
+        <item name="cardElevation">0dp</item>
+    </style>
+
+    <!-- ========== 对话框样式 ========== -->
+    <style name="ThemeOverlay.LightChat.AlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.LightChat.Dialog</item>
+    </style>
+
+    <style name="ShapeAppearance.LightChat.Dialog" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+
+    <style name="MaterialAlertDialog.LightChat" parent="MaterialAlertDialog.Material3">
+        <item name="backgroundInsetStart">24dp</item>
+        <item name="backgroundInsetEnd">24dp</item>
+        <item name="backgroundInsetTop">24dp</item>
+        <item name="backgroundInsetBottom">24dp</item>
+    </style>
+
+    <!-- ========== 进度条样式 ========== -->
+    <style name="Widget.Material3.ProgressBar.Circular" parent="Widget.AppCompat.ProgressBar">
+        <item name="indicatorColor">?attr/colorPrimary</item>
+        <item name="indicatorSize">48dp</item>
+    </style>
+
+    <style name="Widget.Material3.ProgressBar.Linear" parent="Widget.AppCompat.ProgressBar.Horizontal">
+        <item name="indicatorColor">?attr/colorPrimary</item>
+    </style>
+
+    <style name="Widget.Material3.ProgressBar.Linear.Determinate" parent="Widget.Material3.ProgressBar.Linear">
+    </style>
+
+    <!-- ========== 开关样式 ========== -->
+    <style name="Widget.Material3.Switch" parent="Widget.MaterialComponents.CompoundButton.Switch">
+        <item name="thumbTint">?attr/colorPrimary</item>
+    </style>
+
+    <!-- ========== 下拉刷新样式 ========== -->
+    <style name="Widget.Material3.SwipeRefreshLayout" parent="">
+        <item name="android:background">?attr/colorSurface</item>
+    </style>
+
+    <!-- ========== 通用应用样式 ========== -->
+    <style name="Widget.LightChat" parent="Theme.Material3.DayNight">
+    </style>
+
+    <!-- ========== Chip 样式 ========== -->
+    <style name="Widget.LightChat.Chip.Choice" parent="Widget.Material3.Chip.Suggestion">
+        <item name="chipBackgroundColor">?attr/colorSurfaceVariant</item>
+        <item name="chipStrokeColor">?attr/colorOutline</item>
+        <item name="chipCornerRadius">8dp</item>
+    </style>
+</resources>

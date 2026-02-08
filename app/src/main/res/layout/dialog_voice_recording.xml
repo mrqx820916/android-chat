@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="32dp"
+    app:cardBackgroundColor="@color/md_theme_light_surface"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <!-- 录音图标和波形 -->
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <!-- 录音图标 -->
+            <ImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:src="@drawable/ic_mic_large"
+                app:tint="@color/brand_primary" />
+
+            <!-- 波形动画 -->
+            <com.chat.lightweight.media.VoiceWaveformView
+                android:id="@+id/waveform_view"
+                android:layout_width="120dp"
+                android:layout_height="64dp"
+                android:layout_gravity="center" />
+
+        </FrameLayout>
+
+        <!-- 录音时间 -->
+        <TextView
+            android:id="@+id/textView_recording_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="00:00"
+            android:textColor="@color/text_primary"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+
+        <!-- 状态提示 -->
+        <TextView
+            android:id="@+id/textView_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="按住说话"
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp" />
+
+        <!-- 操作按钮 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <!-- 取消按钮 -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_cancel"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="100dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="16dp"
+                android:text="取消" />
+
+            <!-- 发送按钮 -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_send"
+                style="@style/Widget.Material3.Button"
+                android:layout_width="100dp"
+                android:layout_height="48dp"
+                android:backgroundTint="@color/brand_primary"
+                android:text="发送"
+                android:textColor="@color/md_theme_light_onPrimary"
+                app:cornerRadius="24dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

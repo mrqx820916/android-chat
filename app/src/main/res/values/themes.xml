@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Material 3 浅色主题 -->
+    <style name="Theme.LightChat" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- 主色 -->
+        <item name="colorPrimary">@color/md_theme_light_primary</item>
+        <item name="colorOnPrimary">@color/md_theme_light_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/md_theme_light_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/md_theme_light_onPrimaryContainer</item>
+
+        <!-- 副色 -->
+        <item name="colorSecondary">@color/md_theme_light_secondary</item>
+        <item name="colorOnSecondary">@color/md_theme_light_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/md_theme_light_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/md_theme_light_onSecondaryContainer</item>
+
+        <!-- 背景色 -->
+        <item name="android:colorBackground">@color/md_theme_light_background</item>
+        <item name="colorOnBackground">@color/md_theme_light_onBackground</item>
+        <item name="colorSurface">@color/md_theme_light_surface</item>
+        <item name="colorOnSurface">@color/md_theme_light_onSurface</item>
+        <item name="colorSurfaceVariant">@color/md_theme_light_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/md_theme_light_onSurfaceVariant</item>
+
+        <!-- 状态栏 -->
+        <item name="android:statusBarColor">@color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+
+        <!-- 导航栏 -->
+        <item name="android:navigationBarColor">@color/md_theme_light_surface</item>
+        <item name="android:windowLightNavigationBar">true</item>
+
+        <!-- 字体 -->
+        <item name="textAppearanceDisplayLarge">@style/TextAppearance.LightChat.DisplayLarge</item>
+        <item name="textAppearanceHeadlineLarge">@style/TextAppearance.LightChat.HeadlineLarge</item>
+        <item name="textAppearanceTitleLarge">@style/TextAppearance.LightChat.TitleLarge</item>
+        <item name="textAppearanceBodyLarge">@style/TextAppearance.LightChat.BodyLarge</item>
+        <item name="textAppearanceLabelLarge">@style/TextAppearance.LightChat.LabelLarge</item>
+
+        <!-- 按钮样式 -->
+        <item name="materialButtonStyle">@style/Widget.LightChat.Button</item>
+        <item name="materialButtonOutlinedStyle">@style/Widget.LightChat.Button.OutlinedButton</item>
+        <item name="borderlessButtonStyle">@style/Widget.LightChat.Button.TextButton</item>
+
+        <!-- 输入框样式 -->
+        <item name="editTextStyle">@style/Widget.LightChat.TextInputLayout.OutlinedBox</item>
+        <item name="textInputStyle">@style/Widget.LightChat.TextInputLayout.OutlinedBox</item>
+
+        <!-- 对话框样式 -->
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.LightChat.AlertDialog</item>
+        <item name="alertDialogStyle">@style/MaterialAlertDialog.LightChat</item>
+
+        <!-- 其他 -->
+        <item name="android:windowBackground">@color/md_theme_light_background</item>
+    </style>
+
+    <!-- Material 3 暗色主题 -->
+    <style name="Theme.LightChat.Dark" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- 主色 -->
+        <item name="colorPrimary">@color/md_theme_dark_primary</item>
+        <item name="colorOnPrimary">@color/md_theme_dark_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/md_theme_dark_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/md_theme_dark_onPrimaryContainer</item>
+
+        <!-- 副色 -->
+        <item name="colorSecondary">@color/md_theme_dark_secondary</item>
+        <item name="colorOnSecondary">@color/md_theme_dark_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/md_theme_dark_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/md_theme_dark_onSecondaryContainer</item>
+
+        <!-- 背景色 -->
+        <item name="android:colorBackground">@color/md_theme_dark_background</item>
+        <item name="colorOnBackground">@color/md_theme_dark_onBackground</item>
+        <item name="colorSurface">@color/md_theme_dark_surface</item>
+        <item name="colorOnSurface">@color/md_theme_dark_onSurface</item>
+        <item name="colorSurfaceVariant">@color/md_theme_dark_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/md_theme_dark_onSurfaceVariant</item>
+
+        <!-- 状态栏 -->
+        <item name="android:statusBarColor">@color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
+
+        <!-- 导航栏 -->
+        <item name="android:navigationBarColor">@color/md_theme_dark_surface</item>
+        <item name="android:windowLightNavigationBar">false</item>
+
+        <!-- 字体 -->
+        <item name="textAppearanceDisplayLarge">@style/TextAppearance.LightChat.DisplayLarge</item>
+        <item name="textAppearanceHeadlineLarge">@style/TextAppearance.LightChat.HeadlineLarge</item>
+        <item name="textAppearanceTitleLarge">@style/TextAppearance.LightChat.TitleLarge</item>
+        <item name="textAppearanceBodyLarge">@style/TextAppearance.LightChat.BodyLarge</item>
+        <item name="textAppearanceLabelLarge">@style/TextAppearance.LightChat.LabelLarge</item>
+
+        <!-- 按钮、输入框、对话框样式继承浅色主题 -->
+        <item name="materialButtonStyle">@style/Widget.LightChat.Button</item>
+        <item name="materialButtonOutlinedStyle">@style/Widget.LightChat.Button.OutlinedButton</item>
+        <item name="borderlessButtonStyle">@style/Widget.LightChat.Button.TextButton</item>
+        <item name="editTextStyle">@style/Widget.LightChat.TextInputLayout.OutlinedBox</item>
+        <item name="textInputStyle">@style/Widget.LightChat.TextInputLayout.OutlinedBox</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.LightChat.AlertDialog</item>
+        <item name="alertDialogStyle">@style/MaterialAlertDialog.LightChat</item>
+
+        <item name="android:windowBackground">@color/md_theme_dark_background</item>
+    </style>
+
+    <!-- App 主题（默认浅色） -->
+    <style name="AppTheme" parent="Theme.LightChat" />
+
+    <!-- 文字外观样式 -->
+    <style name="TextAppearance.LightChat.DisplayLarge" parent="TextAppearance.Material3.DisplayLarge">
+        <item name="android:textSize">57sp</item>
+        <item name="android:textColor">?attr/colorOnBackground</item>
+    </style>
+
+    <style name="TextAppearance.LightChat.HeadlineLarge" parent="TextAppearance.Material3.HeadlineLarge">
+        <item name="android:textSize">32sp</item>
+        <item name="android:textColor">?attr/colorOnBackground</item>
+    </style>
+
+    <style name="TextAppearance.LightChat.TitleLarge" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="TextAppearance.LightChat.BodyLarge" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <style name="TextAppearance.LightChat.LabelLarge" parent="TextAppearance.Material3.LabelLarge">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+</resources>

@@ -1,0 +1,296 @@
+package com.chat.lightweight.ui.chat.adapter
+
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.core.view.isVisible
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
+import coil.load
+import com.chat.lightweight.R
+import com.chat.lightweight.data.model.MessageItem
+import com.chat.lightweight.databinding.ItemMessageReceivedBinding
+import com.chat.lightweight.databinding.ItemMessageSentBinding
+import com.chat.lightweight.utils.MessageUtils
+import android.media.MediaPlayer
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlin.math.max
+
+/**
+ * 消息列表适配器
+ * 支持多种消息类型：文本、图片、语音
+ */
+class MessageAdapter(
+    private val currentUserId: String,
+    private val isAdmin: Boolean,
+    private val onRetryClick: (MessageItem) -> Unit,
+    private val onDeleteClick: (MessageItem) -> Unit,
+    private val onImageClick: (String) -> Unit
+) : ListAdapter<MessageItem, RecyclerView.ViewHolder>(MessageDiffCallback()) {
+
+    // 语音播放器
+    private var mediaPlayer: MediaPlayer? = null
+    private var currentPlayingView: android.widget.ImageView? = null
+    private val animationScope = CoroutineScope(Dispatchers.Main)
+
+    companion object {
+        private const val VIEW_TYPE_SENT = 1
+        private const val VIEW_TYPE_RECEIVED = 2
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        val item = getItem(position)
+        return if (item.senderId == currentUserId) VIEW_TYPE_SENT else VIEW_TYPE_RECEIVED
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        return when (viewType) {
+            VIEW_TYPE_SENT -> SentMessageViewHolder(
+                ItemMessageSentBinding.inflate(inflater, parent, false),
+                onRetryClick,
+                onDeleteClick,
+                onImageClick,
+                this@MessageAdapter  // 传递adapter实例
+            )
+            VIEW_TYPE_RECEIVED -> ReceivedMessageViewHolder(
+                ItemMessageReceivedBinding.inflate(inflater, parent, false),
+                onImageClick,
+                this@MessageAdapter  // 传递adapter实例
+            )
+            else -> throw IllegalArgumentException("Unknown view type: $viewType")
+        }
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val item = getItem(position)
+        when (holder) {
+            is SentMessageViewHolder -> holder.bind(item, isAdmin)
+            is ReceivedMessageViewHolder -> holder.bind(item)
+        }
+    }
+
+    /**
+     * 发送的消息ViewHolder
+     */
+    class SentMessageViewHolder(
+        private val binding: ItemMessageSentBinding,
+        private val onRetryClick: (MessageItem) -> Unit,
+        private val onDeleteClick: (MessageItem) -> Unit,
+        private val onImageClick: (String) -> Unit,
+        private val adapter: MessageAdapter  // 添加adapter引用
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(item: MessageItem, isAdmin: Boolean) {
+            // 文本消息
+            binding.tvMessageContent.isVisible = item.messageType == MessageItem.TYPE_TEXT
+            binding.tvMessageContent.text = item.content
+
+            // 图片消息
+            binding.ivMessageImage.isVisible = item.messageType == MessageItem.TYPE_IMAGE
+            if (item.messageType == MessageItem.TYPE_IMAGE) {
+                item.fileUrl?.let { url ->
+                    // 处理URL：如果是相对路径，添加服务器地址
+                    val fullUrl = if (url.startsWith("http")) {
+                        url
+                    } else {
+                        "https://chat.soft1688.vip/$url"
+                    }
+                    android.util.Log.d("MessageAdapter", "加载图片: $fullUrl")
+                    binding.ivMessageImage.load(fullUrl) {
+                        placeholder(R.drawable.ic_image_placeholder)
+                        error(R.drawable.ic_image_error)
+                        crossfade(true)
+                    }
+                    binding.ivMessageImage.setOnClickListener { onImageClick(fullUrl) }
+                }
+            }
+
+            // 语音消息
+            binding.voiceContainer.isVisible = item.messageType == MessageItem.TYPE_VOICE
+            if (item.messageType == MessageItem.TYPE_VOICE) {
+                binding.tvVoiceDuration.text = item.content // 显示时长
+                binding.ivPlayVoice.setOnClickListener {
+                    // 播放语音
+                    adapter.playVoiceMessage(item.fileUrl, binding.ivPlayVoice)
+                }
+            }
+
+            // 时间（使用MessageUtils智能格式化）
+            binding.tvMessageTime.text = MessageUtils.formatMessageTime(item.timestamp)
+
+            // 消息状态图标
+            when (item.status) {
+                MessageItem.Status.SENDING -> {
+                    binding.ivMessageStatus.setImageResource(R.drawable.ic_message_sending)
+                    binding.ivMessageStatus.isVisible = true
+                    binding.root.setOnClickListener(null)
+                }
+                MessageItem.Status.SENT -> {
+                    binding.ivMessageStatus.setImageResource(R.drawable.ic_message_sent)
+                    binding.ivMessageStatus.isVisible = true
+                    // 管理员可以删除已发送的消息
+                    if (isAdmin) {
+                        binding.root.setOnClickListener { onDeleteClick(item) }
+                    } else {
+                        binding.root.setOnClickListener(null)
+                    }
+                }
+                MessageItem.Status.FAILED -> {
+                    binding.ivMessageStatus.setImageResource(R.drawable.ic_message_failed)
+                    binding.ivMessageStatus.isVisible = true
+                    binding.root.setOnClickListener { onRetryClick(item) }
+                }
+                MessageItem.Status.DELETED -> {
+                    binding.ivMessageStatus.isVisible = false
+                    binding.root.setOnClickListener(null)
+                }
+            }
+        }
+    }
+
+    /**
+     * 接收的消息ViewHolder
+     */
+    class ReceivedMessageViewHolder(
+        private val binding: ItemMessageReceivedBinding,
+        private val onImageClick: (String) -> Unit,
+        private val adapter: MessageAdapter  // 添加adapter引用
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(item: MessageItem) {
+            // 文本消息
+            binding.tvMessageContent.isVisible = item.messageType == MessageItem.TYPE_TEXT
+            binding.tvMessageContent.text = item.content
+
+            // 图片消息
+            binding.ivMessageImage.isVisible = item.messageType == MessageItem.TYPE_IMAGE
+            if (item.messageType == MessageItem.TYPE_IMAGE) {
+                item.fileUrl?.let { url ->
+                    // 处理URL：如果是相对路径，添加服务器地址
+                    val fullUrl = if (url.startsWith("http")) {
+                        url
+                    } else {
+                        "https://chat.soft1688.vip/$url"
+                    }
+                    android.util.Log.d("MessageAdapter", "加载图片: $fullUrl")
+                    binding.ivMessageImage.load(fullUrl) {
+                        placeholder(R.drawable.ic_image_placeholder)
+                        error(R.drawable.ic_image_error)
+                        crossfade(true)
+                    }
+                    binding.ivMessageImage.setOnClickListener { onImageClick(fullUrl) }
+                }
+            }
+
+            // 语音消息
+            binding.voiceContainer.isVisible = item.messageType == MessageItem.TYPE_VOICE
+            if (item.messageType == MessageItem.TYPE_VOICE) {
+                binding.tvVoiceDuration.text = item.content // 显示时长
+                binding.ivPlayVoice.setOnClickListener {
+                    // 播放语音
+                    adapter.playVoiceMessage(item.fileUrl, binding.ivPlayVoice)
+                }
+            }
+
+            // 时间（使用MessageUtils智能格式化）
+            binding.tvMessageTime.text = MessageUtils.formatMessageTime(item.timestamp)
+        }
+    }
+
+    /**
+     * 播放语音消息
+     */
+    private fun playVoiceMessage(fileUrl: String?, playButton: android.widget.ImageView) {
+        fileUrl ?: return
+
+        // 如果当前正在播放这条语音，则停止播放
+        if (currentPlayingView == playButton && mediaPlayer?.isPlaying == true) {
+            stopVoicePlayback()
+            return
+        }
+
+        // 停止之前的播放
+        stopVoicePlayback()
+
+        // 处理URL
+        val fullUrl = if (fileUrl.startsWith("http")) {
+            fileUrl
+        } else {
+            "https://chat.soft1688.vip/$fileUrl"
+        }
+
+        try {
+            mediaPlayer = MediaPlayer().apply {
+                setDataSource(fullUrl)
+                setOnPreparedListener {
+                    start()
+                    currentPlayingView = playButton
+                    startPlayAnimation(playButton)
+                }
+                setOnCompletionListener {
+                    stopVoicePlayback()
+                }
+                setOnErrorListener { _, _, _ ->
+                    stopVoicePlayback()
+                    true
+                }
+                prepareAsync()
+            }
+        } catch (e: Exception) {
+            android.util.Log.e("MessageAdapter", "播放语音失败", e)
+            stopVoicePlayback()
+        }
+    }
+
+    /**
+     * 停止语音播放
+     */
+    private fun stopVoicePlayback() {
+        currentPlayingView?.let {
+            // 恢复原始图标
+            it.setImageResource(R.drawable.ic_play_voice)
+        }
+        currentPlayingView = null
+        mediaPlayer?.release()
+        mediaPlayer = null
+    }
+
+    /**
+     * 播放动画（播放按钮旋转）
+     */
+    private fun startPlayAnimation(playButton: android.widget.ImageView) {
+        animationScope.launch {
+            var rotation = 0f
+            while (mediaPlayer?.isPlaying == true && currentPlayingView == playButton) {
+                playButton.rotation = rotation
+                rotation += 10f
+                delay(100)
+            }
+        }
+    }
+
+    /**
+     * 释放资源
+     */
+    fun release() {
+        stopVoicePlayback()
+    }
+
+    /**
+     * DiffCallback
+     */
+    class MessageDiffCallback : DiffUtil.ItemCallback<MessageItem>() {
+        override fun areItemsTheSame(oldItem: MessageItem, newItem: MessageItem): Boolean {
+            return oldItem.id == newItem.id || oldItem.tempId == newItem.tempId
+        }
+
+        override fun areContentsTheSame(oldItem: MessageItem, newItem: MessageItem): Boolean {
+            return oldItem == newItem
+        }
+    }
+}

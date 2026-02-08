@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 启动页布局 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/md_theme_light_background"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".presentation.ui.SplashActivity">
+
+    <!-- 应用图标 -->
+    <ImageView
+        android:id="@+id/ivLogo"
+        android:layout_width="@dimen/icon_size_xlarge"
+        android:layout_height="@dimen/icon_size_xlarge"
+        android:src="@android:drawable/sym_def_app_icon"
+        android:contentDescription="@string/app_name" />
+
+    <!-- 应用名称 -->
+    <TextView
+        android:id="@+id/tvAppName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_5"
+        android:text="@string/app_name"
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/text_size_headline"
+        android:textStyle="bold" />
+
+    <!-- 加载指示器 -->
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progressIndicator"
+        style="@style/Widget.App.ProgressIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_7"
+        android:indeterminate="true" />
+
+</LinearLayout>

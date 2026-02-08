@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="权限管理示例"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="24dp"/>
+
+    <!-- 相机权限 -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_camera"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="请求相机权限"
+        android:layout_marginBottom="12dp"
+        style="@style/Widget.LightChat.Button"/>
+
+    <!-- 录音权限 -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_record"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="请求录音权限"
+        android:layout_marginBottom="12dp"
+        style="@style/Widget.LightChat.Button"/>
+
+    <!-- 存储权限 -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_storage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="请求存储权限"
+        android:layout_marginBottom="12dp"
+        style="@style/Widget.LightChat.Button"/>
+
+    <!-- 通知权限 -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_notification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="请求通知权限 (Android 13+)"
+        android:layout_marginBottom="12dp"
+        style="@style/Widget.LightChat.Button.OutlinedButton"/>
+
+    <!-- 批量请求 -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_multiple"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="批量请求权限"
+        android:layout_marginBottom="12dp"
+        style="@style/Widget.LightChat.Button.TonalButton"/>
+
+    <!-- 检查权限 -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_check"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="检查权限状态"
+        android:layout_marginBottom="24dp"
+        style="@style/Widget.LightChat.Button.TextButton"/>
+
+    <!-- 说明文本 -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="2dp"
+        android:layout_marginTop="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="使用说明"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="• 点击上方按钮请求相应权限\n• 首次请求会显示权限说明\n• 权限被拒绝后可以再次请求\n• 永久拒绝会引导前往设置\n• 批量请求可以一次请求多个权限"
+                android:textSize="14sp"
+                android:lineSpacingExtra="4dp"/>
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>

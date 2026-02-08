@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 圆形进度条 -->
+    <style name="Widget.LightChat.ProgressBar.Circular" parent="Widget.Material3.ProgressBar.Circular">
+        <item name="indicatorColor">@color/brand_primary</item>
+        <item name="indicatorSize">48dp</item>
+        <item name="trackThickness">4dp</item>
+        <item name="trackColor">@color/brand_primary_container</item>
+    </style>
+
+    <!-- 小号圆形进度条 -->
+    <style name="Widget.LightChat.ProgressBar.Circular.Small" parent="Widget.Material3.ProgressBar.Circular">
+        <item name="indicatorColor">@color/brand_primary</item>
+        <item name="indicatorSize">24dp</item>
+        <item name="trackThickness">3dp</item>
+        <item name="trackColor">@color/brand_primary_container</item>
+    </style>
+
+    <!-- 大号圆形进度条 -->
+    <style name="Widget.LightChat.ProgressBar.Circular.Large" parent="Widget.Material3.ProgressBar.Circular">
+        <item name="indicatorColor">@color/brand_primary</item>
+        <item name="indicatorSize">64dp</item>
+        <item name="trackThickness">6dp</item>
+        <item name="trackColor">@color/brand_primary_container</item>
+    </style>
+
+    <!-- 线性进度条 -->
+    <style name="Widget.LightChat.ProgressBar.Linear" parent="Widget.Material3.ProgressBar.Linear">
+        <item name="indicatorColor">@color/brand_primary</item>
+        <item name="trackThickness">4dp</item>
+        <item name="trackColor">@color/brand_primary_container</item>
+        <item name="trackCornerRadius">2dp</item>
+    </style>
+
+    <!-- 确定性进度条 -->
+    <style name="Widget.LightChat.ProgressBar.Linear.Determinate" parent="Widget.Material3.ProgressBar.Linear.Determinate">
+        <item name="indicatorColor">@color/brand_primary</item>
+        <item name="trackThickness">4dp</item>
+        <item name="trackColor">@color/brand_primary_container</item>
+        <item name="trackCornerRadius">2dp</item>
+    </style>
+
+    <!-- 刷新指示器 -->
+    <style name="Widget.LightChat.SwipeRefreshLayout" parent="Widget.Material3.SwipeRefreshLayout">
+        <item name="indicatorColor">?attr/colorPrimary</item>
+    </style>
+
+    <!-- 加载状态视图 -->
+    <style name="Widget.LightChat.LoadingView">
+        <item name="android:gravity">center</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:padding">32dp</item>
+    </style>
+
+    <!-- 加载文本 -->
+    <style name="TextAppearance.LightChat.LoadingText" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+        <item name="android:letterSpacing">0.01</item>
+    </style>
+
+    <!-- 骨架屏 -->
+    <style name="Widget.LightChat.SkeletonView">
+        <item name="android:background">@color/brand_primary_container</item>
+    </style>
+</resources>

@@ -1,0 +1,2 @@
+rootProject.name = "LightweightChat"
+include ':app'

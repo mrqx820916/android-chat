@@ -1,0 +1,26 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="192dp"
+    android:height="192dp"
+    android:viewportWidth="192"
+    android:viewportHeight="192">
+  <!-- 中心圆形 -->
+  <path
+      android:fillColor="#22c55e"
+      android:pathData="M96,96m-64,0a64,64 0,1 1,128 0a64,64 0,1 1,-128 0"/>
+
+  <!-- 聊天气泡 -->
+  <path
+      android:fillColor="#ffffff"
+      android:pathData="M56,64h80c8,0 16,8 16,16v32c0,8 -8,16 -16,16h-16v16l-24,-16h-40c-8,0 -16,-8 -16,-16v-32c0,-8 8,-16 16,-16z"/>
+
+  <!-- 装饰圆点 -->
+  <path
+      android:fillColor="#dcfce7"
+      android:pathData="M80,96m-6,0a6,6 0,1 1,12 0a6,6 0,1 1,-12 0"/>
+  <path
+      android:fillColor="#dcfce7"
+      android:pathData="M96,96m-6,0a6,6 0,1 1,12 0a6,6 0,1 1,-12 0"/>
+  <path
+      android:fillColor="#dcfce7"
+      android:pathData="M112,96m-6,0a6,6 0,1 1,12 0a6,6 0,1 1,-12 0"/>
+</vector>

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ========== 按钮样式 ========== -->
+
+    <!-- 主按钮 -->
+    <style name="Widget.App.Button" parent="Widget.Material3.Button">
+        <item name="android:minHeight">@dimen/height_button</item>
+        <item name="android:textSize">@dimen/text_size_body_large</item>
+        <item name="cornerRadius">@dimen/corner_radius_medium</item>
+        <item name="backgroundTint">@color/brand_primary</item>
+    </style>
+
+    <!-- 次要按钮 -->
+    <style name="Widget.App.Button.OutlinedButton" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:minHeight">@dimen/height_button</item>
+        <item name="android:textSize">@dimen/text_size_body_large</item>
+        <item name="cornerRadius">@dimen/corner_radius_medium</item>
+        <item name="strokeColor">@color/brand_primary</item>
+    </style>
+
+    <!-- 文本按钮 -->
+    <style name="Widget.App.Button.TextButton" parent="Widget.Material3.Button.TextButton">
+        <item name="android:minHeight">@dimen/height_button</item>
+        <item name="android:textSize">@dimen/text_size_body_large</item>
+        <item name="android:textColor">@color/brand_primary</item>
+    </style>
+
+    <!-- 图标按钮 -->
+    <style name="Widget.App.Button.IconButton" parent="Widget.Material3.Button.IconButton">
+        <item name="android:minWidth">@dimen/height_button</item>
+        <item name="android:minHeight">@dimen/height_button</item>
+        <item name="iconTint">@color/brand_primary</item>
+    </style>
+
+    <!-- FAB按钮 -->
+    <style name="Widget.App.FAB" parent="Widget.Material3.FloatingActionButton.Primary">
+        <item name="fabCustomSize">56dp</item>
+        <item name="backgroundTint">@color/brand_primary</item>
+    </style>
+
+    <!-- ========== 输入框样式 ========== -->
+
+    <!-- 输入框 -->
+    <style name="Widget.App.TextInputLayout.OutlinedBox" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/brand_primary</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="boxCornerRadiusTopStart">@dimen/corner_radius_medium</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/corner_radius_medium</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/corner_radius_medium</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/corner_radius_medium</item>
+        <item name="hintTextColor">@color/text_hint</item>
+        <item name="android:textColorHint">@color/text_hint</item>
+        <item name="errorTextColor">@color/error</item>
+    </style>
+
+    <!-- ========== 卡片样式 ========== -->
+
+    <!-- 基础卡片 -->
+    <style name="Widget.App.Card" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardCornerRadius">@dimen/corner_radius_medium</item>
+        <item name="cardElevation">@dimen/card_elevation</item>
+        <item name="cardBackgroundColor">@color/md_theme_light_surface</item>
+    </style>
+
+    <!-- 对话列表项卡片 -->
+    <style name="Widget.App.Card.ConversationItem" parent="Widget.App.Card">
+        <item name="cardElevation">@dimen/elevation_none</item>
+        <item name="cardBackgroundColor">@android:color/transparent</item>
+    </style>
+
+    <!-- ========== 对话框样式 ========== -->
+
+    <!-- Material对话框 -->
+    <style name="ThemeOverlay.App.AlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="colorPrimary">@color/brand_primary</item>
+        <item name="colorSecondary">@color/brand_primary</item>
+        <item name="android:backgroundTint">@color/md_theme_light_surface</item>
+    </style>
+
+    <!-- ========== 工具栏样式 ========== -->
+
+    <!-- 顶部工具栏 -->
+    <style name="Widget.App.Toolbar" parent="Widget.Material3.Toolbar">
+        <item name="android:background">@color/md_theme_light_surface</item>
+        <item name="titleTextColor">@color/text_primary</item>
+        <item name="android:elevation">@dimen/elevation_small</item>
+    </style>
+
+    <!-- ========== 列表样式 ========== -->
+
+    <!-- 列表项 -->
+    <style name="Widget.App.ListItem" parent="Widget.Material3.ListItem">
+        <item name="android:minHeight">@dimen/list_item_height</item>
+        <item name="android:paddingStart">@dimen/list_item_padding_horizontal</item>
+        <item name="android:paddingEnd">@dimen/list_item_padding_horizontal</item>
+        <item name="android:paddingTop">@dimen/list_item_padding_vertical</item>
+        <item name="android:paddingBottom">@dimen/list_item_padding_vertical</item>
+    </style>
+
+    <!-- ========== 消息气泡样式 ========== -->
+
+    <!-- 发送的消息气泡 -->
+    <style name="Widget.App.MessageBubble.Sent">
+        <item name="backgroundColor">@color/chat_message_bubble_self</item>
+        <item name="cornerRadius">@dimen/message_bubble_corner</item>
+        <item name="android:paddingStart">@dimen/message_bubble_padding</item>
+        <item name="android:paddingEnd">@dimen/message_bubble_padding</item>
+        <item name="android:paddingTop">@dimen/spacing_3</item>
+        <item name="android:paddingBottom">@dimen/spacing_3</item>
+    </style>
+
+    <!-- 接收的消息气泡 -->
+    <style name="Widget.App.MessageBubble.Received">
+        <item name="backgroundColor">@color/chat_message_bubble_other</item>
+        <item name="cornerRadius">@dimen/message_bubble_corner</item>
+        <item name="android:paddingStart">@dimen/message_bubble_padding</item>
+        <item name="android:paddingEnd">@dimen/message_bubble_padding</item>
+        <item name="android:paddingTop">@dimen/spacing_3</item>
+        <item name="android:paddingBottom">@dimen/spacing_3</item>
+    </style>
+
+    <!-- ========== 文本样式 ========== -->
+
+    <!-- 标题 -->
+    <style name="TextAppearance.App.Title" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textSize">@dimen/text_size_title</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- 副标题 -->
+    <style name="TextAppearance.App.Subtitle" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:textSize">@dimen/text_size_body_large</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- 正文 -->
+    <style name="TextAppearance.App.Body" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:textSize">@dimen/text_size_body</item>
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+
+    <!-- 次要文本 -->
+    <style name="TextAppearance.App.BodySecondary" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textSize">@dimen/text_size_body</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
+    <!-- 说明文字 -->
+    <style name="TextAppearance.App.Caption" parent="TextAppearance.Material3.BodySmall">
+        <item name="android:textSize">@dimen/text_size_caption</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
+    <!-- ========== 分割线样式 ========== -->
+
+    <style name="Widget.App.Divider" parent="Widget.Material3.Divider">
+        <item name="dividerColor">@color/divider</item>
+    </style>
+
+    <!-- ========== 进度指示器样式 ========== -->
+
+    <style name="Widget.App.ProgressIndicator" parent="Widget.Material3.CircularProgressIndicator">
+        <item name="indicatorColor">@color/brand_primary</item>
+    </style>
+
+    <!-- ========== 滑块样式 ========== -->
+
+    <style name="Widget.App.Slider" parent="Widget.Material3.Slider">
+        <item name="trackColor">@color/brand_primary_container</item>
+        <item name="thumbColor">@color/brand_primary</item>
+    </style>
+
+    <!-- ========== Switch样式 ========== -->
+
+    <style name="Widget.App.Switch" parent="Widget.Material3.Switch">
+        <item name="trackColor">@color/brand_primary_container</item>
+        <item name="thumbIconTint">@color/brand_primary</item>
+    </style>
+</resources>

@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  自动删除设置页面布局
+  管理员专用：设置消息自动删除时间
+-->
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/md_theme_light_background">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- 顶部AppBar -->
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/md_theme_light_surface"
+                android:elevation="0dp"
+                app:navigationIcon="@drawable/ic_back"
+                app:title="消息自动删除设置"
+                app:titleTextColor="@color/md_theme_light_onSurface" />
+
+            <!-- 内容区域 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- 启用自动删除卡片 -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:cardElevation="0dp"
+                    app:cardCornerRadius="16dp"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="@color/border_light"
+                    app:cardBackgroundColor="@color/md_theme_light_surface">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="16dp"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="启用自动删除"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/md_theme_light_onSurface" />
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/enabledSwitch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:thumbTint="@color/brand_primary"
+                            app:trackTint="@color/md_theme_light_primary_container" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- 时间设置卡片 -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/timeSettingsCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:visibility="gone"
+                    app:cardElevation="0dp"
+                    app:cardCornerRadius="16dp"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="@color/border_light"
+                    app:cardBackgroundColor="@color/md_theme_light_surface"
+                    tools:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <!-- 时间单位选择 -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="时间单位"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/md_theme_light_onSurface" />
+
+                        <com.google.android.material.chip.ChipGroup
+                            android:id="@+id/unitChipGroup"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            app:singleSelection="true"
+                            app:chipSpacing="8dp">
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chipMinutes"
+                                style="@style/Widget.LightChat.Chip.Choice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="分钟" />
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chipHours"
+                                style="@style/Widget.LightChat.Chip.Choice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="小时" />
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chipDays"
+                                style="@style/Widget.LightChat.Chip.Choice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="天" />
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chipMonths"
+                                style="@style/Widget.LightChat.Chip.Choice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="月" />
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chipYears"
+                                style="@style/Widget.LightChat.Chip.Choice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="年" />
+
+                        </com.google.android.material.chip.ChipGroup>
+
+                        <!-- 数值输入 -->
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/valueInputLayout"
+                            style="@style/Widget.LightChat.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            app:boxCornerRadiusTopStart="12dp"
+                            app:boxCornerRadiusTopEnd="12dp"
+                            app:boxCornerRadiusBottomStart="12dp"
+                            app:boxCornerRadiusBottomEnd="12dp"
+                            app:hintTextColor="@color/md_theme_light_primary">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/valueEditText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="数量"
+                                android:inputType="number"
+                                android:textSize="16sp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <!-- 数值范围提示 -->
+                        <TextView
+                            android:id="@+id/rangeHintTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="范围: 1-59"
+                            android:textSize="12sp"
+                            android:textColor="@color/md_theme_light_onSurfaceVariant" />
+
+                        <!-- 说明 -->
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            app:cardElevation="0dp"
+                            app:cardCornerRadius="12dp"
+                            app:cardBackgroundColor="@color/info_container">
+
+                            <TextView
+                                android:id="@+id/descriptionTextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="12dp"
+                                android:text="设置后，新发送的消息将在指定时间后自动删除。已有消息不受影响。"
+                                android:textSize="14sp"
+                                android:textColor="@color/info" />
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- 禁用状态提示 -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/disabledHintCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:cardElevation="0dp"
+                    app:cardCornerRadius="16dp"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="@color/border_light"
+                    app:cardBackgroundColor="@color/md_theme_light_surface">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp"
+                        android:text="消息将永久保存，不会自动删除。"
+                        android:textSize="14sp"
+                        android:textColor="@color/md_theme_light_onSurfaceVariant" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- 加载进度指示器 -->
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progressIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminate="true"
+        android:visibility="gone"
+        app:indicatorSize="40dp"
+        app:trackThickness="4dp"
+        app:indicatorColor="@color/md_theme_light_primary"
+        tools:visibility="visible" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

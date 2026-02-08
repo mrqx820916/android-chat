@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 品牌主色 - 微信绿 -->
+    <color name="brand_primary">#22c55e</color>
+    <color name="brand_primary_dark">#16a34a</color>
+    <color name="brand_primary_light">#86efac</color>
+    <color name="brand_primary_container">#dcfce7</color>
+
+    <!-- Material 3 色板 -->
+    <color name="md_theme_light_primary">#16a34a</color>
+    <color name="md_theme_light_onPrimary">#ffffff</color>
+    <color name="md_theme_light_primaryContainer">#dcfce7</color>
+    <color name="md_theme_light_onPrimaryContainer">#0f4f26</color>
+    <color name="md_theme_light_primary_container">#dcfce7</color>
+    <color name="md_theme_light_on_primary_container">#0f4f26</color>
+
+    <color name="md_theme_light_secondary">#22c55e</color>
+    <color name="md_theme_light_onSecondary">#ffffff</color>
+    <color name="md_theme_light_secondaryContainer">#86efac</color>
+    <color name="md_theme_light_onSecondaryContainer">#0f4f26</color>
+
+    <!-- 背景色 -->
+    <color name="md_theme_light_background">#ffffff</color>
+    <color name="md_theme_light_onBackground">#111827</color>
+    <color name="md_theme_light_surface">#ffffff</color>
+    <color name="md_theme_light_onSurface">#111827</color>
+    <color name="md_theme_light_surfaceVariant">#f9fafb</color>
+    <color name="md_theme_light_onSurfaceVariant">#6b7280</color>
+    <color name="md_theme_light_outline">#e5e7eb</color>
+    <color name="md_theme_light_outlineVariant">#f3f4f6</color>
+
+    <!-- 状态色 -->
+    <color name="success">#22c55e</color>
+    <color name="success_container">#dcfce7</color>
+    <color name="error">#ef4444</color>
+    <color name="error_container">#fee2e2</color>
+    <color name="warning">#f59e0b</color>
+    <color name="warning_container">#fef3c7</color>
+    <color name="info">#3b82f6</color>
+    <color name="info_container">#dbeafe</color>
+
+    <!-- 文本色 -->
+    <color name="text_primary">#111827</color>
+    <color name="text_secondary">#6b7280</color>
+    <color name="text_hint">#9ca3af</color>
+    <color name="text_disabled">#d1d5db</color>
+
+    <!-- 边框和分割线 -->
+    <color name="border_light">#e5e7eb</color>
+    <color name="border_medium">#d1d5db</color>
+    <color name="divider">#f3f4f6</color>
+
+    <!-- 暗色主题 - Material 3 -->
+    <color name="md_theme_dark_primary">#86efac</color>
+    <color name="md_theme_dark_onPrimary">#0f4f26</color>
+    <color name="md_theme_dark_primaryContainer">#16a34a</color>
+    <color name="md_theme_dark_onPrimaryContainer">#dcfce7</color>
+
+    <color name="md_theme_dark_secondary">#22c55e</color>
+    <color name="md_theme_dark_onSecondary">#ffffff</color>
+    <color name="md_theme_dark_secondaryContainer">#16a34a</color>
+    <color name="md_theme_dark_onSecondaryContainer">#dcfce7</color>
+
+    <color name="md_theme_dark_background">#111827</color>
+    <color name="md_theme_dark_onBackground">#f9fafb</color>
+    <color name="md_theme_dark_surface">#1f2937</color>
+    <color name="md_theme_dark_onSurface">#f9fafb</color>
+    <color name="md_theme_dark_surfaceVariant">#374151</color>
+    <color name="md_theme_dark_onSurfaceVariant">#d1d5db</color>
+    <color name="md_theme_dark_outline">#4b5563</color>
+    <color name="md_theme_dark_outlineVariant">#374151</color>
+
+    <!-- 特殊用途 -->
+    <color name="transparent">#00000000</color>
+    <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
+    <color name="semi_transparent">#80000000</color>
+    <color name="overlay_light">#40000000</color>
+    <color name="overlay_dark">#80000000</color>
+
+    <!-- 渐变色 -->
+    <color name="gradient_start">#22c55e</color>
+    <color name="gradient_end">#16a34a</color>
+
+    <!-- 传统兼容色 -->
+    <color name="colorPrimary">#22c55e</color>
+    <color name="colorPrimaryDark">#16a34a</color>
+    <color name="colorAccent">#22c55e</color>
+
+    <!-- 聊天界面专用颜色 -->
+    <color name="chat_message_bubble_self">#95EC69</color>
+    <color name="chat_message_bubble_other">#FFFFFF</color>
+    <color name="chat_background">#EDEDED</color>
+    <color name="chat_divider">#E0E0E0</color>
+    <color name="chat_link_text">#576B95</color>
+
+    <!-- 头像颜色（根据首字母分配） -->
+    <color name="avatar_green">#07C160</color>
+    <color name="avatar_blue">#10AEFF</color>
+    <color name="avatar_orange">#FFA940</color>
+    <color name="avatar_red">#FF6B6B</color>
+
+    <!-- 布局颜色别名 -->
+    <color name="primary">@color/md_theme_light_primary</color>
+    <color name="on_primary">@color/md_theme_light_onPrimary</color>
+    <color name="surface">@color/md_theme_light_surface</color>
+    <color name="surface_variant">@color/md_theme_light_surfaceVariant</color>
+    <color name="on_surface">@color/md_theme_light_onSurface</color>
+    <color name="on_surface_variant">@color/md_theme_light_onSurfaceVariant</color>
+    <color name="background">@color/md_theme_light_background</color>
+    <color name="outline">@color/md_theme_light_outline</color>
+</resources>
