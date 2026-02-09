@@ -112,6 +112,9 @@ dependencies {
     // 图片加载
     implementation 'io.coil-kt:coil:2.5.0'
 
+    // ExoPlayer (用于播放网络音频)
+    implementation 'com.google.android.exoplayer:exoplayer:2.19.1'
+
     // 数据存储
     implementation 'androidx.datastore:datastore-preferences:1.0.0'
 

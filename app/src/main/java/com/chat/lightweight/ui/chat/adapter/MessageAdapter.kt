@@ -13,12 +13,13 @@ import com.chat.lightweight.data.model.MessageItem
 import com.chat.lightweight.databinding.ItemMessageReceivedBinding
 import com.chat.lightweight.databinding.ItemMessageSentBinding
 import com.chat.lightweight.utils.MessageUtils
-import android.media.MediaPlayer
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.Player
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlin.math.max
 
 /**
  * 消息列表适配器
@@ -32,8 +33,8 @@ class MessageAdapter(
     private val onImageClick: (String) -> Unit
 ) : ListAdapter<MessageItem, RecyclerView.ViewHolder>(MessageDiffCallback()) {
 
-    // 语音播放器
-    private var mediaPlayer: MediaPlayer? = null
+    // ExoPlayer 播放器
+    private var exoPlayer: ExoPlayer? = null
     private var currentPlayingView: android.widget.ImageView? = null
     private val animationScope = CoroutineScope(Dispatchers.Main)
 
@@ -208,8 +209,10 @@ class MessageAdapter(
     private fun playVoiceMessage(fileUrl: String?, playButton: android.widget.ImageView) {
         fileUrl ?: return
 
+        android.util.Log.d("MessageAdapter", "播放语音: $fileUrl")
+
         // 如果当前正在播放这条语音，则停止播放
-        if (currentPlayingView == playButton && mediaPlayer?.isPlaying == true) {
+        if (currentPlayingView == playButton && exoPlayer?.isPlaying == true) {
             stopVoicePlayback()
             return
         }
@@ -224,22 +227,47 @@ class MessageAdapter(
             "https://chat.soft1688.vip/$fileUrl"
         }
 
+        android.util.Log.d("MessageAdapter", "完整URL: $fullUrl")
+
         try {
-            mediaPlayer = MediaPlayer().apply {
-                setDataSource(fullUrl)
-                setOnPreparedListener {
-                    start()
-                    currentPlayingView = playButton
-                    startPlayAnimation(playButton)
-                }
-                setOnCompletionListener {
-                    stopVoicePlayback()
-                }
-                setOnErrorListener { _, _, _ ->
-                    stopVoicePlayback()
-                    true
-                }
-                prepareAsync()
+            // 初始化 ExoPlayer
+            val context = playButton.context
+            exoPlayer = ExoPlayer.Builder(context).build().apply {
+                // 设置播放项
+                val mediaItem = MediaItem.fromUri(fullUrl)
+                setMediaItem(mediaItem)
+
+                // 设置监听器
+                addListener(object : Player.Listener {
+                    override fun onPlaybackStateChanged(playbackState: Int) {
+                        when (playbackState) {
+                            Player.STATE_IDLE -> {
+                                android.util.Log.d("MessageAdapter", "播放状态: IDLE")
+                            }
+                            Player.STATE_BUFFERING -> {
+                                android.util.Log.d("MessageAdapter", "播放状态: BUFFERING")
+                            }
+                            Player.STATE_READY -> {
+                                android.util.Log.d("MessageAdapter", "播放状态: READY - 开始播放")
+                                currentPlayingView = playButton
+                                startPlayAnimation(playButton)
+                            }
+                            Player.STATE_ENDED -> {
+                                android.util.Log.d("MessageAdapter", "播放状态: ENDED")
+                                stopVoicePlayback()
+                            }
+                        }
+                    }
+
+                    override fun onPlayerError(error: com.google.android.exoplayer2.PlaybackException) {
+                        android.util.Log.e("MessageAdapter", "播放错误: ${error.message}", error)
+                        stopVoicePlayback()
+                    }
+                })
+
+                // 准备并播放
+                prepare()
+                play()
             }
         } catch (e: Exception) {
             android.util.Log.e("MessageAdapter", "播放语音失败", e)
@@ -251,13 +279,15 @@ class MessageAdapter(
      * 停止语音播放
      */
     private fun stopVoicePlayback() {
+        android.util.Log.d("MessageAdapter", "停止播放")
         currentPlayingView?.let {
             // 恢复原始图标
             it.setImageResource(R.drawable.ic_play_voice)
+            it.rotation = 0f
         }
         currentPlayingView = null
-        mediaPlayer?.release()
-        mediaPlayer = null
+        exoPlayer?.release()
+        exoPlayer = null
     }
 
     /**
@@ -266,7 +296,7 @@ class MessageAdapter(
     private fun startPlayAnimation(playButton: android.widget.ImageView) {
         animationScope.launch {
             var rotation = 0f
-            while (mediaPlayer?.isPlaying == true && currentPlayingView == playButton) {
+            while (exoPlayer?.isPlaying == true && currentPlayingView == playButton) {
                 playButton.rotation = rotation
                 rotation += 10f
                 delay(100)
