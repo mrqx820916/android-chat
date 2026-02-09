@@ -38,18 +38,46 @@ data class MessageItem(
 
     companion object {
         /**
-         * 解析 ISO 8601 格式的时间字符串
+         * 解析多种时间格式字符串
+         * 支持：
+         * 1. ISO 8601: "2024-02-09T08:30:00.000Z"
+         * 2. SQLite DATETIME: "2024-02-09 08:30:00"
          */
         private fun parseCreatedAt(dateString: String?): Long {
-            if (dateString.isNullOrEmpty()) return System.currentTimeMillis()
-
-            return try {
-                val sdf = java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", java.util.Locale.getDefault())
-                sdf.timeZone = java.util.TimeZone.getTimeZone("UTC")
-                sdf.parse(dateString)?.time ?: System.currentTimeMillis()
-            } catch (e: Exception) {
-                System.currentTimeMillis()
+            if (dateString.isNullOrEmpty()) {
+                android.util.Log.d("MessageItem", "parseCreatedAt: dateString is null or empty")
+                return System.currentTimeMillis()
             }
+
+            // 尝试多种格式
+            val formats = listOf(
+                "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",  // ISO 8601 with milliseconds
+                "yyyy-MM-dd'T'HH:mm:ss'Z'",       // ISO 8601 without milliseconds
+                "yyyy-MM-dd HH:mm:ss.SSS",        // SQLite with milliseconds
+                "yyyy-MM-dd HH:mm:ss",            // SQLite standard
+                "yyyy-MM-dd'T'HH:mm:ss.SSS",      // ISO without Z
+                "yyyy-MM-dd'T'HH:mm:ss"           // ISO without Z and milliseconds
+            )
+
+            for (format in formats) {
+                try {
+                    val sdf = java.text.SimpleDateFormat(format, java.util.Locale.getDefault())
+                    // ISO 8601格式需要UTC时区
+                    if (format.contains("'Z'") || format.contains("'T'")) {
+                        sdf.timeZone = java.util.TimeZone.getTimeZone("UTC")
+                    }
+                    val parsedTime = sdf.parse(dateString)?.time
+                    if (parsedTime != null) {
+                        android.util.Log.d("MessageItem", "parseCreatedAt: input='$dateString', format='$format', output=$parsedTime")
+                        return parsedTime
+                    }
+                } catch (e: Exception) {
+                    // 继续尝试下一种格式
+                }
+            }
+
+            android.util.Log.e("MessageItem", "parseCreatedAt: failed to parse '$dateString' with any format")
+            return System.currentTimeMillis()
         }
 
         const val TYPE_TEXT = "text"
