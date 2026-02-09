@@ -42,6 +42,8 @@ data class MessageItem(
          * 支持：
          * 1. ISO 8601: "2024-02-09T08:30:00.000Z"
          * 2. SQLite DATETIME: "2024-02-09 08:30:00"
+         *
+         * 后端返回的是UTC时间，需要转换为本地时区（北京时间GMT+8）
          */
         private fun parseCreatedAt(dateString: String?): Long {
             if (dateString.isNullOrEmpty()) {
@@ -62,13 +64,12 @@ data class MessageItem(
             for (format in formats) {
                 try {
                     val sdf = java.text.SimpleDateFormat(format, java.util.Locale.getDefault())
-                    // ISO 8601格式需要UTC时区
-                    if (format.contains("'Z'") || format.contains("'T'")) {
-                        sdf.timeZone = java.util.TimeZone.getTimeZone("UTC")
-                    }
+                    // 后端返回的是UTC时间，先按UTC解析
+                    sdf.timeZone = java.util.TimeZone.getTimeZone("UTC")
                     val parsedTime = sdf.parse(dateString)?.time
                     if (parsedTime != null) {
-                        android.util.Log.d("MessageItem", "parseCreatedAt: input='$dateString', format='$format', output=$parsedTime")
+                        android.util.Log.d("MessageItem", "parseCreatedAt: input='$dateString', format='$format', utc=$parsedTime, local=${parsedTime + getUtcOffsetMillis()}")
+                        // 返回UTC时间戳，SimpleDateFormat会自动转换为本地时区显示
                         return parsedTime
                     }
                 } catch (e: Exception) {
@@ -78,6 +79,14 @@ data class MessageItem(
 
             android.util.Log.e("MessageItem", "parseCreatedAt: failed to parse '$dateString' with any format")
             return System.currentTimeMillis()
+        }
+
+        /**
+         * 获取UTC时区偏移量（毫秒）
+         * 北京时间GMT+8 = 8 * 60 * 60 * 1000 = 28800000毫秒
+         */
+        private fun getUtcOffsetMillis(): Long {
+            return java.util.TimeZone.getDefault().getOffset(System.currentTimeMillis()).toLong()
         }
 
         const val TYPE_TEXT = "text"

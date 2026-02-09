@@ -14,14 +14,18 @@ object MessageUtils {
     /**
      * 格式化消息时间
      * 与React WEB端保持一致：今天/昨天/周几/MM-DD
+     * 自动使用本地时区（北京时间GMT+8）
      */
     fun formatMessageTime(timestamp: Long): String {
+        // timestamp是UTC时间戳，SimpleDateFormat会自动转换为本地时区
         val date = Date(timestamp)
         val now = Date()
         val diffDays = ((now.time - date.time) / MILLIS_PER_DAY).toInt()
 
         val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
         val timeStr = timeFormat.format(date)
+
+        android.util.Log.d("MessageUtils", "formatMessageTime: timestamp=$timestamp, date=$date, timeStr=$timeStr, diffDays=$diffDays")
 
         return when {
             diffDays == 0 -> timeStr  // 今天：只显示时间
