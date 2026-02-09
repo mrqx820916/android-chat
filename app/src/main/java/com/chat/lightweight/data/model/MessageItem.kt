@@ -37,6 +37,21 @@ data class MessageItem(
     }
 
     companion object {
+        /**
+         * 解析 ISO 8601 格式的时间字符串
+         */
+        private fun parseCreatedAt(dateString: String?): Long {
+            if (dateString.isNullOrEmpty()) return System.currentTimeMillis()
+
+            return try {
+                val sdf = java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", java.util.Locale.getDefault())
+                sdf.timeZone = java.util.TimeZone.getTimeZone("UTC")
+                sdf.parse(dateString)?.time ?: System.currentTimeMillis()
+            } catch (e: Exception) {
+                System.currentTimeMillis()
+            }
+        }
+
         const val TYPE_TEXT = "text"
         const val TYPE_IMAGE = "image"
         const val TYPE_AUDIO = "audio"
@@ -79,7 +94,7 @@ data class MessageItem(
                 messageType = message.messageType.value,
                 fileUrl = message.fileUrl,
                 voiceDuration = null,
-                timestamp = System.currentTimeMillis(), // 从createdAt解析
+                timestamp = parseCreatedAt(message.createdAt),
                 isFromSelf = false,
                 isRead = false,
                 expiresAt = null,
@@ -118,7 +133,7 @@ data class MessageItem(
                 messageType = message.messageType.value,
                 fileUrl = message.fileUrl,
                 voiceDuration = null,
-                timestamp = System.currentTimeMillis(), // TODO: 从createdAt解析
+                timestamp = parseCreatedAt(message.createdAt),
                 isFromSelf = message.senderId == currentUserId,
                 isRead = false,
                 expiresAt = null,
@@ -155,7 +170,7 @@ data class MessageItem(
                 messageType = event.message_type,
                 fileUrl = event.file_url,
                 voiceDuration = null,
-                timestamp = System.currentTimeMillis(),
+                timestamp = parseCreatedAt(event.created_at),
                 isFromSelf = event.sender_id == currentUserId,
                 isRead = false,
                 expiresAt = null,
