@@ -30,6 +30,29 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/item_conversation" />
 
+            <!-- Shimmer骨架屏 -->
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmerLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <include layout="@layout/item_conversation_skeleton" />
+                    <include layout="@layout/item_conversation_skeleton" />
+                    <include layout="@layout/item_conversation_skeleton" />
+                    <include layout="@layout/item_conversation_skeleton" />
+                    <include layout="@layout/item_conversation_skeleton" />
+
+                </LinearLayout>
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
             <!-- 空状态 -->
             <LinearLayout
                 android:id="@+id/emptyStateLayout"
@@ -70,18 +93,5 @@
         </FrameLayout>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-    <!-- 加载进度指示器 -->
-    <com.google.android.material.progressindicator.CircularProgressIndicator
-        android:id="@+id/progressIndicator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:indeterminate="true"
-        android:visibility="gone"
-        app:indicatorSize="40dp"
-        app:trackThickness="4dp"
-        app:indicatorColor="@color/md_theme_light_primary"
-        tools:visibility="visible" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

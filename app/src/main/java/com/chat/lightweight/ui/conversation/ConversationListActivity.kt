@@ -16,6 +16,8 @@ import com.chat.lightweight.ui.member.MemberManagementFragment
 import com.chat.lightweight.presentation.viewmodel.ViewModelFactory
 import com.chat.lightweight.ui.member.MemberViewModel
 import com.chat.lightweight.ui.settings.SettingsFragment
+import com.chat.lightweight.service.NetworkStateMonitor
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
@@ -39,6 +41,7 @@ class ConversationListActivity : AppCompatActivity() {
     private lateinit var preferencesManager: PreferencesManager
 
     private var currentFragment: Fragment? = null
+    private var networkSnackbar: Snackbar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,8 +52,8 @@ class ConversationListActivity : AppCompatActivity() {
 
         setupToolbar()
 
-        // 首先检查用户是否已登录（阻塞式，确保完成后再继续）
-        checkLoginAndInit()
+        // SplashActivity 已完成登录检查，此处仅做防御性校验
+        ensureLoggedIn()
 
         setupBottomNavigation()
 
@@ -61,35 +64,21 @@ class ConversationListActivity : AppCompatActivity() {
 
         // 处理通知点击
         handleNotificationIntent()
+
+        // 监听网络状态
+        setupNetworkMonitoring()
     }
 
     /**
-     * 检查登录状态并初始化
+     * 防御性校验登录状态
+     * 正常情况下 SplashActivity 已完成登录检查，此处防止直接打开此页面时异常
      */
-    private fun checkLoginAndInit() {
-        // 使用 runBlocking 确保在继续前完成
-        val userId = kotlinx.coroutines.runBlocking {
+    private fun ensureLoggedIn() {
+        lifecycleScope.launch {
             val isLoggedIn = preferencesManager.isLoggedInFlow().first()
             if (!isLoggedIn) {
-                // 未登录，跳转到登录页
                 navigateToLogin()
-                return@runBlocking null
             }
-            // 已登录，获取 userId 并初始化 NetworkRepository
-            val uid = preferencesManager.getUserId()
-            if (uid != null && uid.isNotEmpty()) {
-                com.chat.lightweight.network.NetworkRepository.init(uid)
-                // 初始化 Socket 连接
-                com.chat.lightweight.socket.SocketClient.connect(uid)
-                uid
-            } else {
-                null
-            }
-        }
-
-        // 如果 userId 为空，跳转到登录页
-        if (userId == null) {
-            navigateToLogin()
         }
     }
 
@@ -225,6 +214,34 @@ class ConversationListActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: android.view.Menu): Boolean {
         menuInflater.inflate(R.menu.menu_conversation_list, menu)
         return true
+    }
+
+    /**
+     * 监听网络状态变化
+     */
+    private fun setupNetworkMonitoring() {
+        val monitor = NetworkStateMonitor.getInstance(applicationContext)
+        lifecycleScope.launch {
+            monitor.observeNetworkState().collect { isConnected ->
+                if (isConnected) {
+                    networkSnackbar?.dismiss()
+                    networkSnackbar = null
+                } else {
+                    if (networkSnackbar == null || networkSnackbar?.isShown != true) {
+                        networkSnackbar = Snackbar.make(
+                            binding.root,
+                            "网络已断开，请检查网络连接",
+                            Snackbar.LENGTH_INDEFINITE
+                        ).also { it.show() }
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        networkSnackbar?.dismiss()
     }
 
     companion object {

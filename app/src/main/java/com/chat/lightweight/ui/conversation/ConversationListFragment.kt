@@ -91,8 +91,23 @@ class ConversationListFragment : Fragment() {
      * 渲染UI状态
      */
     private fun renderUiState(state: ConversationListUiState) {
+        // 首次加载时显示骨架屏
+        if (state.isLoading && state.conversations.isEmpty()) {
+            binding.shimmerLayout.visibility = View.VISIBLE
+            binding.shimmerLayout.startShimmer()
+            binding.conversationsRecyclerView.visibility = View.GONE
+        } else {
+            binding.shimmerLayout.stopShimmer()
+            binding.shimmerLayout.visibility = View.GONE
+            binding.conversationsRecyclerView.visibility = View.VISIBLE
+        }
+
         // 更新对话列表
         adapter.submitList(state.conversations)
+
+        // 空状态
+        binding.emptyStateLayout.visibility =
+            if (!state.isLoading && state.conversations.isEmpty()) View.VISIBLE else View.GONE
 
         // 更新加载状态
         binding.swipeRefreshLayout.isRefreshing = state.isRefreshing

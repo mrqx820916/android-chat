@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 对话列表骨架屏项 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="16dp"
+    android:gravity="center_vertical">
+
+    <!-- 头像占位 -->
+    <View
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:background="#E0E0E0" />
+
+    <!-- 文本占位 -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="12dp"
+        android:orientation="vertical">
+
+        <!-- 用户名占位 -->
+        <View
+            android:layout_width="120dp"
+            android:layout_height="16dp"
+            android:background="#E0E0E0" />
+
+        <!-- 消息占位 -->
+        <View
+            android:layout_width="200dp"
+            android:layout_height="14dp"
+            android:layout_marginTop="8dp"
+            android:background="#EEEEEE" />
+
+    </LinearLayout>
+
+</LinearLayout>
