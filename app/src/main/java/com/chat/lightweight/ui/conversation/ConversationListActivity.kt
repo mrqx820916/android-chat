@@ -260,6 +260,18 @@ class ConversationListActivity : AppCompatActivity() {
         networkSnackbar?.dismiss()
     }
 
+    private var lastBackPressTime = 0L
+
+    override fun onBackPressed() {
+        val now = System.currentTimeMillis()
+        if (now - lastBackPressTime < 2000) {
+            super.onBackPressed()
+        } else {
+            lastBackPressTime = now
+            Snackbar.make(binding.root, "再按一次退出轻聊", Snackbar.LENGTH_SHORT).show()
+        }
+    }
+
     companion object {
         const val EXTRA_FROM_NOTIFICATION = "from_notification"
         const val EXTRA_CONVERSATION_ID = "conversation_id"

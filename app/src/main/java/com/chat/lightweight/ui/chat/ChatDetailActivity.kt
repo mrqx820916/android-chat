@@ -160,6 +160,18 @@ class ChatDetailActivity : AppCompatActivity() {
             sendTextMessage()
         }
 
+        // 发送按钮初始灰色
+        updateSendButtonState("")
+
+        // 输入框内容变化时更新发送按钮状态
+        binding.etMessage.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: android.text.Editable?) {
+                updateSendButtonState(s?.toString()?.trim() ?: "")
+            }
+        })
+
         // 输入框回车发送
         binding.etMessage.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEND) {
@@ -470,5 +482,15 @@ class ChatDetailActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
+    }
+
+    /**
+     * 根据输入内容更新发送按钮状态
+     * 有内容时高亮（主题色），无内容时灰色
+     */
+    private fun updateSendButtonState(text: String) {
+        val hasContent = text.isNotEmpty()
+        binding.btnSend.isEnabled = hasContent
+        binding.btnSend.alpha = if (hasContent) 1.0f else 0.4f
     }
 }
