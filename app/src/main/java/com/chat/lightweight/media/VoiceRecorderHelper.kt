@@ -177,8 +177,13 @@ class VoiceRecorderHelper(private val context: Context) : DefaultLifecycleObserv
                 val currentDuration = System.currentTimeMillis() - startTime
                 _duration.value = currentDuration
 
-                // 更新音量等级（模拟）
-                _volumeLevel.value = (Math.random() * 0.8 + 0.2).toFloat()
+                // 更新音量等级（使用真实音量）
+                try {
+                    _volumeLevel.value = (mediaRecorder?.maxAmplitude?.toFloat()?.div(32768f))
+                        ?.coerceIn(0f, 1f) ?: 0f
+                } catch (_: Exception) {
+                    _volumeLevel.value = 0f
+                }
 
                 if (currentDuration >= MAX_DURATION) {
                     // 超过最大时长，自动停止

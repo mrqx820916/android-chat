@@ -123,7 +123,7 @@ class ChatDetailActivity : AppCompatActivity() {
                 viewModel.deleteMessage(message.id)
             },
             onImageClick = { imageUrl ->
-                // TODO: 打开图片预览
+                openImagePreview(imageUrl)
             }
         )
 
@@ -409,6 +409,16 @@ class ChatDetailActivity : AppCompatActivity() {
                 messageAdapter.itemCount - 1
             )
         }
+    }
+
+    /**
+     * 打开图片预览
+     */
+    private fun openImagePreview(imageUrl: String) {
+        val intent = Intent(this, ImagePreviewActivity::class.java).apply {
+            putExtra(ImagePreviewActivity.EXTRA_IMAGE_URL, imageUrl)
+        }
+        startActivity(intent)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

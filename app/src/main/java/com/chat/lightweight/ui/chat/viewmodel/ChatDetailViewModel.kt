@@ -174,25 +174,51 @@ class ChatDetailViewModel(
                 senderId = currentUserId,
                 content = "图片",
                 messageType = MessageItem.TYPE_IMAGE
-            )
+            ).copy(fileUrl = imageUri)  // 暂时用本地URI做预览
             addMessage(tempMessage)
 
             try {
-                // TODO: 上传图片
-                // 1. 保存URI到临时文件
-                // 2. 上传文件
-                // 3. 发送消息
+                // 1. 将URI转为File
+                val uri = Uri.parse(imageUri)
+                val file = MediaUtils.getFileFromUri(context, uri)
 
-                val request = com.chat.lightweight.domain.model.SendMessageRequest(
-                    conversationId = conversationId,
-                    content = "图片",
-                    messageType = MessageItem.TYPE_IMAGE,
-                    fileUrl = null,
-                    tempId = tempMessage.tempId
-                )
+                if (file == null) {
+                    updateMessageStatus(tempMessage.tempId ?: "", MessageItem.Status.FAILED)
+                    _events.emit(ChatEvent.SendMessageFailed("无法读取图片文件"))
+                    return@launch
+                }
 
-                _events.emit(ChatEvent.SendMessageFailed("图片上传功能开发中"))
-                updateMessageStatus(tempMessage.tempId ?: "", MessageItem.Status.FAILED)
+                // 2. 上传图片文件
+                val uploadResult = NetworkRepository.getInstance().uploadFile(file, "member")
+
+                when (uploadResult) {
+                    is com.chat.lightweight.network.ApiResponse.Success -> {
+                        val fileUrl = uploadResult.data
+
+                        // 3. 发送消息请求
+                        val request = com.chat.lightweight.domain.model.SendMessageRequest(
+                            conversationId = conversationId,
+                            content = "图片",
+                            messageType = MessageType.IMAGE.value,
+                            fileUrl = fileUrl,
+                            tempId = tempMessage.tempId
+                        )
+
+                        val result = chatRepository.sendMessage(request)
+                        result.onFailure { error ->
+                            updateMessageStatus(tempMessage.tempId ?: "", MessageItem.Status.FAILED)
+                            _events.emit(ChatEvent.SendMessageFailed(error.message ?: "发送失败"))
+                        }
+                    }
+                    is com.chat.lightweight.network.ApiResponse.Error -> {
+                        updateMessageStatus(tempMessage.tempId ?: "", MessageItem.Status.FAILED)
+                        _events.emit(ChatEvent.SendMessageFailed("图片上传失败: ${uploadResult.message}"))
+                    }
+                    else -> {
+                        updateMessageStatus(tempMessage.tempId ?: "", MessageItem.Status.FAILED)
+                        _events.emit(ChatEvent.SendMessageFailed("图片上传失败"))
+                    }
+                }
             } catch (e: Exception) {
                 updateMessageStatus(tempMessage.tempId ?: "", MessageItem.Status.FAILED)
                 _events.emit(ChatEvent.SendMessageFailed(e.message ?: "发送失败"))

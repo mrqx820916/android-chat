@@ -13,6 +13,10 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import com.chat.lightweight.R
 import com.chat.lightweight.databinding.DialogVoiceRecordingBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import java.io.File
 
@@ -30,6 +34,7 @@ class VoiceRecordingDialog(
     private lateinit var voiceRecorder: VoiceRecorderHelper
     private var isRecording = false
     private val handler = Handler(Looper.getMainLooper())
+    private val recordingScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -133,12 +138,15 @@ class VoiceRecordingDialog(
 
                 Thread.sleep(1000)
 
-                // 超过60秒自动停止
+                // 超过60秒自动停止并发送
                 if (seconds >= 60) {
                     handler.post {
-                        stopRecording()
+                        val file = stopRecording()
+                        file?.let {
+                            val duration = System.currentTimeMillis() - binding.textViewRecordingTime.tag as Long
+                            onRecordingComplete(it, duration)
+                        }
                         dismiss()
-                        onRecordingCancel()
                     }
                     break
                 }
@@ -151,9 +159,7 @@ class VoiceRecordingDialog(
      * 收集录音状态
      */
     private fun collectRecordingState() {
-        // 使用协程监听录音状态
-        val scope = kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.Main)
-        scope.launch {
+        recordingScope.launch {
             voiceRecorder.recordingState.collect { state ->
                 when (state) {
                     is VoiceRecorderHelper.RecordingState.Recording -> {
@@ -178,6 +184,7 @@ class VoiceRecordingDialog(
     override fun dismiss() {
         isRecording = false
         binding.waveformView.stopAnimation()
+        recordingScope.cancel()
         super.dismiss()
     }
 

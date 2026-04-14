@@ -101,6 +101,13 @@
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:theme="@style/AppTheme" />
 
+        <!-- 图片预览页面 -->
+        <activity
+            android:name=".ui.chat.ImagePreviewActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+
         <!-- Socket前台服务 -->
         <service
             android:name=".service.SocketForegroundService"
