@@ -7,7 +7,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
 import com.chat.lightweight.R
-import com.chat.lightweight.ui.chat.ChatDetailActivity
+import com.chat.lightweight.ui.conversation.ConversationListActivity
 import com.google.firebase.messaging.FirebaseMessaging
 
 /**
@@ -123,11 +123,12 @@ class NotificationHelper(private val context: Context) {
         messageId: String?,
         senderId: String?
     ): Intent {
-        return Intent(context, ChatDetailActivity::class.java).apply {
+        return Intent(context, ConversationListActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-            conversationId?.let { putExtra(FcmService.EXTRA_CONVERSATION_ID, it) }
-            messageId?.let { putExtra(FcmService.EXTRA_MESSAGE_ID, it) }
-            senderId?.let { putExtra(FcmService.EXTRA_SENDER_ID, it) }
+            conversationId?.let {
+                putExtra(ConversationListActivity.EXTRA_FROM_NOTIFICATION, true)
+                putExtra(ConversationListActivity.EXTRA_CONVERSATION_ID, it)
+            }
         }
     }
 }

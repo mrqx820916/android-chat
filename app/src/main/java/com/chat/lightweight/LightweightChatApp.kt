@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import coil.ImageLoader
 import com.chat.lightweight.di.CoilImageLoadConfig
+import com.chat.lightweight.service.AppLifecycleObserver
 
 /**
  * 轻聊应用Application类
@@ -26,6 +27,9 @@ class LightweightChatApp : Application() {
 
         // 初始化Coil图片加载器
         imageLoader = CoilImageLoadConfig.createImageLoader(this)
+
+        // 初始化应用生命周期监听
+        AppLifecycleObserver.getInstance(this).init()
 
         // 初始化其他组件...
     }

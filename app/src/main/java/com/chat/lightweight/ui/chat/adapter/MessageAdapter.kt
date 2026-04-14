@@ -30,7 +30,8 @@ class MessageAdapter(
     private val isAdmin: Boolean,
     private val onRetryClick: (MessageItem) -> Unit,
     private val onDeleteClick: (MessageItem) -> Unit,
-    private val onImageClick: (String) -> Unit
+    private val onImageClick: (String) -> Unit,
+    private val onMessageLongClick: ((View, MessageItem) -> Unit)? = null
 ) : ListAdapter<MessageItem, RecyclerView.ViewHolder>(MessageDiffCallback()) {
 
     // ExoPlayer 播放器
@@ -151,6 +152,14 @@ class MessageAdapter(
                     binding.root.setOnClickListener(null)
                 }
             }
+
+            // 长按弹出菜单
+            if (item.status != MessageItem.Status.DELETED) {
+                binding.root.setOnLongClickListener { view ->
+                    adapter.onMessageLongClick?.invoke(view, item)
+                    true
+                }
+            }
         }
     }
 
@@ -200,6 +209,12 @@ class MessageAdapter(
 
             // 时间（使用MessageUtils智能格式化）
             binding.tvMessageTime.text = MessageUtils.formatMessageTime(item.timestamp)
+
+            // 长按弹出菜单
+            binding.root.setOnLongClickListener { view ->
+                adapter.onMessageLongClick?.invoke(view, item)
+                true
+            }
         }
     }
 

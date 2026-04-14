@@ -18,11 +18,21 @@ class MessageMenuHandler(
 
     /**
      * 创建消息选项菜单
+     * @param anchor 锚点View（消息item的root view）
+     * @param messageId 消息ID
+     * @param content 消息内容（用于复制）
      */
-    fun createMessageMenu(): PopupMenu {
-        // TODO: 实现PopupMenu创建
-        // 需要根据isAdmin显示不同选项
-        throw UnsupportedOperationException("待实现")
+    fun show(anchor: android.view.View, messageId: String, content: String?) {
+        val popup = PopupMenu(anchor.context, anchor)
+        popup.menuInflater.inflate(R.menu.menu_message, popup.menu)
+
+        // 管理员显示删除菜单
+        popup.menu.findItem(R.id.menu_delete)?.isVisible = isAdmin
+
+        popup.setOnMenuItemClickListener { item ->
+            handleMenuItemSelected(item, messageId, content)
+        }
+        popup.show()
     }
 
     /**

@@ -186,7 +186,23 @@ class ConversationListActivity : AppCompatActivity() {
         val conversationId = intent.getStringExtra(EXTRA_CONVERSATION_ID)
 
         if (fromNotification && conversationId != null) {
-            // TODO: 导航到指定对话
+            // 延迟导航，等待 Fragment 创建完成
+            binding.root.post {
+                lifecycleScope.launch {
+                    val conversation = conversationViewModel.getConversationById(conversationId)
+                    if (conversation != null) {
+                        val intent = Intent(
+                            this@ConversationListActivity,
+                            com.chat.lightweight.ui.chat.ChatDetailActivity::class.java
+                        ).apply {
+                            putExtra(com.chat.lightweight.ui.chat.ChatDetailActivity.EXTRA_CONVERSATION_ID, conversation.id)
+                            putExtra(com.chat.lightweight.ui.chat.ChatDetailActivity.EXTRA_MEMBER_ID, conversation.userId)
+                            putExtra(com.chat.lightweight.ui.chat.ChatDetailActivity.EXTRA_MEMBER_NAME, conversation.username)
+                        }
+                        startActivity(intent)
+                    }
+                }
+            }
         }
     }
 

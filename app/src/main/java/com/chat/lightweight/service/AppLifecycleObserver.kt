@@ -38,22 +38,30 @@ class AppLifecycleObserver private constructor(private val context: Application)
      * 初始化监听
      */
     fun init() {
-        // ProcessLifecycleOwner 需要额外的依赖，暂时禁用
-        Timber.d("AppLifecycleObserver initialized")
+        androidx.lifecycle.ProcessLifecycleOwner.get().lifecycle.addObserver(this)
+        Timber.d("AppLifecycleObserver initialized and registered")
     }
 
     /**
      * 应用进入前台
      */
     override fun onResume(owner: LifecycleOwner) {
-        // 功能暂时禁用
+        if (!isAppInForeground) {
+            isAppInForeground = true
+            Timber.d("App entered foreground")
+            onAppForeground()
+        }
     }
 
     /**
      * 应用进入后台
      */
     override fun onPause(owner: LifecycleOwner) {
-        // 功能暂时禁用
+        if (isAppInForeground) {
+            isAppInForeground = false
+            Timber.d("App entered background")
+            onAppBackground()
+        }
     }
 
     /**

@@ -102,4 +102,11 @@ class ConversationViewModel(
     fun clearError() {
         _uiState.value = _uiState.value.copy(error = null)
     }
+
+    /**
+     * 根据ID查找对话（用于通知点击导航）
+     */
+    fun getConversationById(conversationId: String): ConversationItem? {
+        return _uiState.value.conversations.find { it.id == conversationId }
+    }
 }

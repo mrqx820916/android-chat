@@ -113,6 +113,17 @@ class ChatDetailActivity : AppCompatActivity() {
     }
 
     private fun setupMessageAdapter() {
+        val menuHandler = com.chat.lightweight.ui.menu.MessageMenuHandler(
+            onMessageDelete = { messageId -> viewModel.deleteMessage(messageId) },
+            onMessageCopy = { content ->
+                val clipboard = getSystemService(android.content.Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+                clipboard.setPrimaryClip(android.content.ClipData.newPlainText("消息", content))
+                Snackbar.make(binding.root, "已复制", Snackbar.LENGTH_SHORT).show()
+            },
+            onMessageRecall = { messageId -> viewModel.deleteMessage(messageId) },
+            isAdmin = viewModel.isAdmin
+        )
+
         messageAdapter = MessageAdapter(
             currentUserId = viewModel.currentUserId,
             isAdmin = viewModel.isAdmin,
@@ -120,10 +131,15 @@ class ChatDetailActivity : AppCompatActivity() {
                 viewModel.retrySendMessage(message)
             },
             onDeleteClick = { message ->
-                viewModel.deleteMessage(message.id)
+                menuHandler.showDeleteConfirmDialog(this) {
+                    viewModel.deleteMessage(message.id)
+                }
             },
             onImageClick = { imageUrl ->
                 openImagePreview(imageUrl)
+            },
+            onMessageLongClick = { view, message ->
+                menuHandler.show(view, message.id, message.content)
             }
         )
 
