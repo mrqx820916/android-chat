@@ -9,12 +9,21 @@ android {
     namespace 'com.chat.lightweight'
     compileSdk 34
 
+    signingConfigs {
+        release {
+            storeFile file('../lightchat-release.jks')
+            storePassword 'lightchat2024'
+            keyAlias 'lightchat'
+            keyPassword 'lightchat2024'
+        }
+    }
+
     defaultConfig {
         applicationId "com.chat.lightweight"
         minSdk 33
         targetSdk 34
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -33,7 +42,8 @@ android {
             buildConfigField "boolean", "DEBUG_MODE", "true"
         }
         release {
-            minifyEnabled true
+            signingConfig signingConfigs.release
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField "String", "BASE_URL", "\"https://chat.soft1688.vip\""
             buildConfigField "String", "SOCKET_URL", "\"https://chat.soft1688.vip\""

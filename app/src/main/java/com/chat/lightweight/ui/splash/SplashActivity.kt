@@ -25,7 +25,6 @@ class SplashActivity : AppCompatActivity() {
 
         preferencesManager = PreferencesManager(applicationContext)
 
-        // 延迟一小段时间后检查登录状态并跳转
         binding.root.postDelayed({ checkLoginAndNavigate() }, 800)
     }
 
@@ -33,7 +32,6 @@ class SplashActivity : AppCompatActivity() {
         lifecycleScope.launch {
             val isLoggedIn = preferencesManager.isLoggedInFlow().first()
             val intent = if (isLoggedIn) {
-                // 已登录，初始化网络和 Socket
                 val userId = preferencesManager.getUserId()
                 if (userId != null) {
                     com.chat.lightweight.network.NetworkRepository.init(userId)

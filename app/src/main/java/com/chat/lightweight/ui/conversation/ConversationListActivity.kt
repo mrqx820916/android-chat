@@ -16,10 +16,14 @@ import com.chat.lightweight.ui.member.MemberManagementFragment
 import com.chat.lightweight.presentation.viewmodel.ViewModelFactory
 import com.chat.lightweight.ui.member.MemberViewModel
 import com.chat.lightweight.ui.settings.SettingsFragment
+import com.chat.lightweight.ui.update.UpdateDialogFragment
 import com.chat.lightweight.service.NetworkStateMonitor
+import com.chat.lightweight.update.UpdateCheckResult
+import com.chat.lightweight.update.UpdateManager
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 /**
  * 对话列表Activity
@@ -67,6 +71,9 @@ class ConversationListActivity : AppCompatActivity() {
 
         // 监听网络状态
         setupNetworkMonitoring()
+
+        // 启动时后台检查更新
+        checkForUpdateInBackground()
     }
 
     /**
@@ -275,5 +282,30 @@ class ConversationListActivity : AppCompatActivity() {
     companion object {
         const val EXTRA_FROM_NOTIFICATION = "from_notification"
         const val EXTRA_CONVERSATION_ID = "conversation_id"
+    }
+
+    private fun checkForUpdateInBackground() {
+        lifecycleScope.launch {
+            try {
+                when (val result = UpdateManager.checkForUpdate(this@ConversationListActivity)) {
+                    is UpdateCheckResult.UpdateAvailable -> {
+                        Timber.d("发现更新: v${result.manifest.versionName}")
+                        val dialog = UpdateDialogFragment.newInstance(result.manifest)
+                        dialog.showAllowingStateLoss(supportFragmentManager, "update_dialog")
+                    }
+                    is UpdateCheckResult.NoUpdate -> {
+                        Timber.d("已是最新版本: ${result.reason}")
+                    }
+                    is UpdateCheckResult.Skipped -> {
+                        Timber.d("更新已跳过: ${result.reason}")
+                    }
+                    is UpdateCheckResult.Failure -> {
+                        Timber.w("检查更新失败: ${result.message}")
+                    }
+                }
+            } catch (e: Exception) {
+                Timber.e(e, "检查更新异常")
+            }
+        }
     }
 }

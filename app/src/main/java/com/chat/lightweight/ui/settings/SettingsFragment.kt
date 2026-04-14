@@ -5,25 +5,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.chat.lightweight.data.local.PreferencesManager
 import com.chat.lightweight.databinding.FragmentSettingsBinding
+import com.chat.lightweight.ui.update.UpdateDialogFragment
+import com.chat.lightweight.update.UpdateCheckResult
+import com.chat.lightweight.update.UpdateManager
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
-/**
- * 设置Fragment
- *
- * 功能:
- * - 管理员专属：自动删除设置入口
- * - 通用功能：关于应用、退出登录
- */
 class SettingsFragment : Fragment() {
 
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var preferencesManager: PreferencesManager
+    private var isCheckingUpdate = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,6 +51,11 @@ class SettingsFragment : Fragment() {
             startActivity(Intent(requireContext(), AutoDeleteSettingsActivity::class.java))
         }
 
+        // 检查更新
+        binding.checkUpdateCard.setOnClickListener {
+            checkForUpdate()
+        }
+
         // 退出登录
         binding.logoutButton.setOnClickListener {
             logout()
@@ -69,19 +73,48 @@ class SettingsFragment : Fragment() {
         }
     }
 
+    private fun checkForUpdate() {
+        if (isCheckingUpdate) return
+        isCheckingUpdate = true
+        Toast.makeText(requireContext(), "正在检查更新...", Toast.LENGTH_SHORT).show()
+
+        lifecycleScope.launch {
+            try {
+                when (val result = UpdateManager.checkForUpdate(requireContext())) {
+                    is UpdateCheckResult.UpdateAvailable -> {
+                        Timber.d("发现更新: v${result.manifest.versionName}")
+                        val dialog = UpdateDialogFragment.newInstance(result.manifest)
+                        dialog.showAllowingStateLoss(childFragmentManager, "update_dialog")
+                    }
+                    is UpdateCheckResult.NoUpdate -> {
+                        Toast.makeText(requireContext(), "已是最新版本", Toast.LENGTH_SHORT).show()
+                    }
+                    is UpdateCheckResult.Skipped -> {
+                        Toast.makeText(requireContext(), "已是最新版本", Toast.LENGTH_SHORT).show()
+                    }
+                    is UpdateCheckResult.Failure -> {
+                        Timber.w("检查更新失败: ${result.message}")
+                        Toast.makeText(requireContext(), "检查更新失败: ${result.message}", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } catch (e: Exception) {
+                Timber.e(e, "检查更新异常")
+                Toast.makeText(requireContext(), "检查更新失败", Toast.LENGTH_SHORT).show()
+            } finally {
+                isCheckingUpdate = false
+            }
+        }
+    }
+
     /**
      * 退出登录
      */
     private fun logout() {
         lifecycleScope.launch {
-            // 清除用户数据
             preferencesManager.clearUserData()
-
-            // 重置网络实例和断开Socket连接
             com.chat.lightweight.network.NetworkRepository.resetInstance()
             com.chat.lightweight.socket.SocketClient.disconnect()
 
-            // 跳转到登录页
             val intent = Intent(requireContext(),
                 com.chat.lightweight.ui.auth.LoginActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -96,9 +129,6 @@ class SettingsFragment : Fragment() {
     }
 
     companion object {
-        /**
-         * 创建实例的工厂方法
-         */
         fun newInstance() = SettingsFragment()
     }
 }

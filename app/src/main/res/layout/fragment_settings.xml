@@ -47,6 +47,41 @@
 
         </com.google.android.material.card.MaterialCardView>
 
+        <!-- 检查更新 -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/checkUpdateCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardElevation="2dp"
+            app:cardCornerRadius="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="检查更新"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_primary" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="检查是否有新版本可用"
+                    android:textSize="14sp"
+                    android:textColor="@color/text_secondary" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
         <!-- 通用设置：关于应用 -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/aboutCard"
@@ -74,7 +109,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="轻聊 v1.0.0\n私密聊天平台"
+                    android:text="轻聊 v1.1.0\n私密聊天平台"
                     android:textSize="14sp"
                     android:textColor="@color/text_secondary" />
 
