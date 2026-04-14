@@ -198,23 +198,21 @@ class ChatDetailActivity : AppCompatActivity() {
      * 切换表情面板
      */
     private fun toggleEmojiPanel() {
-        // 使用BottomSheetDialog显示表情选择面板
         val bottomSheetDialog = com.google.android.material.bottomsheet.BottomSheetDialog(this)
 
-        // 创建表情网格布局
+        val emojis = arrayOf(
+            "😊", "😂", "👍", "❤️", "🎉", "🙏", "💪", "🔥",
+            "😀", "😃", "😄", "😁", "😆", "😅", "🤣", "😘",
+            "😍", "🥰", "😜", "🤔", "😴", "🤩", "😎", "🥺",
+            "😭", "😱", "😤", "👏", "🙌", "💯", "✨", "⭐"
+        )
+
         val gridView = android.widget.GridView(this).apply {
             numColumns = 6
             verticalSpacing = 8
             horizontalSpacing = 8
             setPadding(16, 16, 16, 16)
-
-            // 常用表情列表
-            val emojis = arrayOf(
-                "😊", "😂", "👍", "❤️", "🎉", "🙏", "💪", "🔥",
-                "😀", "😃", "😄", "😁", "😆", "😅", "🤣", "😘",
-                "😍", "🥰", "😜", "🤔", "😴", "🤩", "😎", "🥺",
-                "😭", "😱", "😤", "👏", "🙌", "💯", "✨", "⭐"
-            )
+            stretchMode = android.widget.GridView.STRETCH_COLUMN_WIDTH
 
             adapter = object : android.widget.BaseAdapter() {
                 override fun getCount(): Int = emojis.size
@@ -227,15 +225,13 @@ class ChatDetailActivity : AppCompatActivity() {
                         gravity = android.view.Gravity.CENTER
                         setPadding(8, 8, 8, 8)
                         setBackgroundColor(android.graphics.Color.TRANSPARENT)
-                        isClickable = true
-                        isFocusable = true
+                        // 不设置 isClickable，让点击事件传递到 GridView 的 onItemClickListener
                     }
                     textView.text = emojis[position]
                     return textView
                 }
             }
 
-            // 表情点击事件
             onItemClickListener = android.widget.AdapterView.OnItemClickListener { _, _, position, _ ->
                 binding.etMessage.text?.append(emojis[position])
                 bottomSheetDialog.dismiss()
