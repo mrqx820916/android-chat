@@ -83,7 +83,7 @@ class SettingsFragment : Fragment() {
 
             // 跳转到登录页
             val intent = Intent(requireContext(),
-                com.chat.lightweight.presentation.ui.auth.LoginActivity::class.java).apply {
+                com.chat.lightweight.ui.auth.LoginActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             }
             startActivity(intent)

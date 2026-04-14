@@ -10,7 +10,7 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.chat.lightweight.R
-import com.chat.lightweight.presentation.ui.chat.ChatDetailActivity
+import com.chat.lightweight.ui.chat.ChatDetailActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import timber.log.Timber

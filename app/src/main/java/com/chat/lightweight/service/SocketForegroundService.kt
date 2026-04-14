@@ -174,11 +174,11 @@ class SocketForegroundService : Service() {
      * 创建持续通知
      */
     private fun createNotification(): Notification {
-        // 点击通知打开MainActivity
+        // 点击通知打开对话列表
         val pendingIntent = PendingIntent.getActivity(
             this,
             0,
-            Intent(this, com.chat.lightweight.MainActivity::class.java),
+            Intent(this, com.chat.lightweight.ui.conversation.ConversationListActivity::class.java),
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
 

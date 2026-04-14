@@ -7,7 +7,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
 import com.chat.lightweight.R
-import com.chat.lightweight.presentation.ui.chat.ChatDetailActivity
+import com.chat.lightweight.ui.chat.ChatDetailActivity
 import com.google.firebase.messaging.FirebaseMessaging
 
 /**
