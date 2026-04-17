@@ -151,15 +151,15 @@ class ConversationRepository(
  * Conversation转ConversationItem扩展函数
  */
 private fun Conversation.toConversationItem(): ConversationItem {
-    // 解析ISO 8601格式日期字符串
+    // 优先使用最后消息时间，无消息时使用对话创建时间
+    val timeSource = lastMessageTime ?: createdAt
     val timestamp = try {
         java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", java.util.Locale.US)
-            .parse(createdAt)?.time ?: System.currentTimeMillis()
+            .parse(timeSource)?.time ?: System.currentTimeMillis()
     } catch (e: Exception) {
         try {
-            // 尝试不带毫秒的格式
             java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", java.util.Locale.US)
-                .parse(createdAt)?.time ?: System.currentTimeMillis()
+                .parse(timeSource)?.time ?: System.currentTimeMillis()
         } catch (e2: Exception) {
             System.currentTimeMillis()
         }

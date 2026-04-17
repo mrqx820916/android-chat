@@ -24,6 +24,9 @@ data class Conversation(
     @SerializedName("last_message")
     val lastMessage: String? = null,
 
+    @SerializedName("last_message_time")
+    val lastMessageTime: String? = null,
+
     @SerializedName("unread_count")
     val unreadCount: Int = 0
 )
