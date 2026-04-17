@@ -10,6 +10,7 @@ import com.chat.lightweight.domain.model.MessageType
 import com.chat.lightweight.media.MediaUtils
 import com.chat.lightweight.network.NetworkRepository
 import com.chat.lightweight.socket.NewMessageEvent
+import com.chat.lightweight.socket.MessagesReadEvent
 import com.chat.lightweight.socket.SocketClient
 import com.chat.lightweight.socket.SocketEvent
 import kotlinx.coroutines.flow.*
@@ -342,6 +343,9 @@ class ChatDetailViewModel(
                     is SocketEvent.MessageSendFailed -> {
                         handleMessageSendFailed(event.event)
                     }
+                    is SocketEvent.MessagesRead -> {
+                        handleMessagesRead(event.event)
+                    }
                     else -> {}
                 }
             }
@@ -392,6 +396,28 @@ class ChatDetailViewModel(
      */
     private fun handleMessageSendFailed(event: com.chat.lightweight.socket.MessageSendFailedEvent) {
         updateMessageStatus(event.tempMessageId, MessageItem.Status.FAILED)
+    }
+
+    /**
+     * 处理消息已读回执
+     */
+    private fun handleMessagesRead(event: MessagesReadEvent) {
+        if (event.conversationId != conversationId) return
+
+        val readIdSet = event.messageIds.toSet()
+        if (readIdSet.isEmpty()) return
+
+        _uiState.update { state ->
+            state.copy(
+                messages = state.messages.map { message ->
+                    if (message.id in readIdSet && message.status != MessageItem.Status.DELETED) {
+                        message.copy(status = MessageItem.Status.READ, isRead = true)
+                    } else {
+                        message
+                    }
+                }
+            )
+        }
     }
 
     /**

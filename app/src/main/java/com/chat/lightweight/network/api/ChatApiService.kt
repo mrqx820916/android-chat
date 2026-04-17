@@ -24,7 +24,8 @@ interface ChatApiService {
      */
     @POST("conversations/{conversationId}/read")
     suspend fun markConversationRead(
-        @Path("conversationId") conversationId: String
+        @Path("conversationId") conversationId: String,
+        @Body request: MarkReadRequest
     ): Response<MarkReadResponse>
 
     /**

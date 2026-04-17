@@ -71,6 +71,15 @@ data class MessageSendFailedEvent(
 )
 
 /**
+ * 消息已读事件
+ */
+data class MessagesReadEvent(
+    val conversationId: String,
+    val messageIds: List<String>,
+    val readAt: String
+)
+
+/**
  * 用户上线事件
  */
 data class UserOnlineEvent(
@@ -106,6 +115,7 @@ sealed class SocketEvent {
     data class NewMessage(val message: NewMessageEvent) : SocketEvent()
     data class MessageDeleted(val event: MessageDeletedEvent) : SocketEvent()
     data class MessageSendFailed(val event: MessageSendFailedEvent) : SocketEvent()
+    data class MessagesRead(val event: MessagesReadEvent) : SocketEvent()
     data class UserOnline(val event: UserOnlineEvent) : SocketEvent()
     data class UserOffline(val event: UserOfflineEvent) : SocketEvent()
     data object Pong : SocketEvent()

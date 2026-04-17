@@ -205,7 +205,10 @@ class NetworkRepository private constructor(private val userId: String) {
     suspend fun markConversationRead(conversationId: String): ApiResponse<Boolean> {
         return withContext(Dispatchers.IO) {
             try {
-                val response = apiClient.chatApi.markConversationRead(conversationId)
+                val response = apiClient.chatApi.markConversationRead(
+                    conversationId,
+                    com.chat.lightweight.network.model.MarkReadRequest("")
+                )
                 if (response.isSuccessful && response.body()?.success == true) {
                     ApiResponse.Success(true)
                 } else {

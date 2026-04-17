@@ -40,7 +40,10 @@ data class Message(
     val expiresAt: String? = null,
 
     @SerializedName("is_deleted")
-    val isDeleted: Int? = null
+    val isDeleted: Int? = null,
+
+    @SerializedName("is_read")
+    val isRead: Int? = null
 ) {
     /** 将 isAdmin 转换为布尔值 */
     val isAdminBoolean: Boolean

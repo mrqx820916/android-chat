@@ -31,7 +31,8 @@ data class MessageItem(
      */
     enum class Status {
         SENDING,  // 发送中
-        SENT,     // 已发送
+        SENT,     // 已发送（灰色单勾）
+        READ,     // 已读（蓝色双勾）
         FAILED,   // 发送失败
         DELETED   // 已删除
     }
@@ -160,6 +161,12 @@ data class MessageItem(
                 message.content
             }
 
+            val isFromSelf = message.senderId == currentUserId
+            val status = when {
+                message.isDeleted -> Status.DELETED
+                isFromSelf && message.isRead -> Status.READ
+                else -> Status.SENT
+            }
             return MessageItem(
                 id = message.id,
                 tempId = null,
@@ -171,10 +178,10 @@ data class MessageItem(
                 fileUrl = message.fileUrl,
                 voiceDuration = null,
                 timestamp = parseCreatedAt(message.createdAt),
-                isFromSelf = message.senderId == currentUserId,
-                isRead = false,
+                isFromSelf = isFromSelf,
+                isRead = message.isRead,
                 expiresAt = null,
-                status = if (message.isDeleted) Status.DELETED else Status.SENT,
+                status = status,
                 isDeleted = message.isDeleted,
                 createdAt = message.createdAt
             )
@@ -197,6 +204,7 @@ data class MessageItem(
                 event.content
             }
 
+            val isFromSelf = event.sender_id == currentUserId
             return MessageItem(
                 id = event.id,
                 tempId = event.temp_id,
@@ -208,7 +216,7 @@ data class MessageItem(
                 fileUrl = event.file_url,
                 voiceDuration = null,
                 timestamp = parseCreatedAt(event.created_at),
-                isFromSelf = event.sender_id == currentUserId,
+                isFromSelf = isFromSelf,
                 isRead = false,
                 expiresAt = null,
                 status = Status.SENT,

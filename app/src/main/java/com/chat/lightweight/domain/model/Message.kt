@@ -30,6 +30,7 @@ data class Message(
     val fileUrl: String? = null,
     val expiresAt: String? = null,
     val isDeleted: Boolean = false,
+    val isRead: Boolean = false,
     val createdAt: String,
     val sender: User? = null
 ) : Parcelable

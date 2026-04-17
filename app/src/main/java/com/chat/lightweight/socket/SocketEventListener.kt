@@ -65,6 +65,13 @@ class SocketEventListener {
     }
 
     /**
+     * 发出消息已读事件
+     */
+    suspend fun emitMessagesRead(event: MessagesReadEvent) {
+        _socketEvents.emit(SocketEvent.MessagesRead(event))
+    }
+
+    /**
      * 发出用户上线事件
      */
     suspend fun emitUserOnline(event: UserOnlineEvent) {

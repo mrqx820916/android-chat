@@ -142,6 +142,15 @@ class MessageAdapter(
                         binding.root.setOnClickListener(null)
                     }
                 }
+                MessageItem.Status.READ -> {
+                    binding.ivMessageStatus.setImageResource(R.drawable.ic_message_read)
+                    binding.ivMessageStatus.isVisible = true
+                    if (isAdmin) {
+                        binding.root.setOnClickListener { onDeleteClick(item) }
+                    } else {
+                        binding.root.setOnClickListener(null)
+                    }
+                }
                 MessageItem.Status.FAILED -> {
                     binding.ivMessageStatus.setImageResource(R.drawable.ic_message_failed)
                     binding.ivMessageStatus.isVisible = true

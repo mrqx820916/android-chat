@@ -216,6 +216,28 @@ class SocketManager(private val eventListener: SocketEventListener) {
                 }
             }
 
+            // 消息已读
+            on(SocketConfig.Events.MESSAGES_READ) { args ->
+                try {
+                    val data = args.firstOrNull() as? JSONObject
+                    data?.let {
+                        val messageIds = it.optJSONArray("messageIds")?.let { arr ->
+                            (0 until arr.length()).map { idx -> arr.getString(idx) }
+                        } ?: emptyList()
+                        val event = MessagesReadEvent(
+                            conversationId = it.optString("conversationId"),
+                            messageIds = messageIds,
+                            readAt = it.optString("readAt")
+                        )
+                        scope.launch {
+                            eventListener.emitMessagesRead(event)
+                        }
+                    }
+                } catch (e: Exception) {
+                    Log.e(TAG, "处理消息已读失败", e)
+                }
+            }
+
             // 用户上线
             on(SocketConfig.Events.USER_ONLINE) { args ->
                 try {

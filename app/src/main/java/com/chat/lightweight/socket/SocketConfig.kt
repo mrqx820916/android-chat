@@ -52,6 +52,7 @@ object SocketConfig {
         const val NEW_MESSAGE = "new_message"
         const val MESSAGE_DELETED = "message_deleted"
         const val MESSAGE_SEND_FAILED = "message_send_failed"
+        const val MESSAGES_READ = "messages_read"
         const val USER_ONLINE = "user_online"
         const val USER_OFFLINE = "user_offline"
         const val PONG = "pong"

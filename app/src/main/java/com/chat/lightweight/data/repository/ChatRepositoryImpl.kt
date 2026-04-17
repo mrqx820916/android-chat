@@ -210,7 +210,9 @@ class ChatRepositoryImpl(
 
     override suspend fun markConversationRead(conversationId: String): Result<Boolean> {
         return try {
-            val response = apiClient.chatApi.markConversationRead(conversationId)
+            val userId = preferencesManager.getUserId() ?: return Result.failure(Exception("用户未登录"))
+            val request = com.chat.lightweight.network.model.MarkReadRequest(userId)
+            val response = apiClient.chatApi.markConversationRead(conversationId, request)
             if (response.isSuccessful && response.body() != null) {
                 Result.success(response.body()!!.success ?: false)
             } else {
@@ -243,6 +245,7 @@ class ChatRepositoryImpl(
                         fileUrl = msg.fileUrl,
                         expiresAt = msg.expiresAt,
                         isDeleted = msg.isDeleted == 1,
+                        isRead = msg.isRead == 1,
                         createdAt = msg.createdAt,
                         sender = null
                     )

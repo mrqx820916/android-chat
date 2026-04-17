@@ -35,3 +35,11 @@ data class MarkReadResponse(
     @SerializedName("success")
     val success: Boolean
 )
+
+/**
+ * 标记已读请求
+ */
+data class MarkReadRequest(
+    @SerializedName("userId")
+    val userId: String
+)
