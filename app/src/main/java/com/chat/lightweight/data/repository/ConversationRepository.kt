@@ -153,17 +153,7 @@ class ConversationRepository(
 private fun Conversation.toConversationItem(): ConversationItem {
     // 优先使用最后消息时间，无消息时使用对话创建时间
     val timeSource = lastMessageTime ?: createdAt
-    val timestamp = try {
-        java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", java.util.Locale.US)
-            .parse(timeSource)?.time ?: System.currentTimeMillis()
-    } catch (e: Exception) {
-        try {
-            java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", java.util.Locale.US)
-                .parse(timeSource)?.time ?: System.currentTimeMillis()
-        } catch (e2: Exception) {
-            System.currentTimeMillis()
-        }
-    }
+    val timestamp = parseTimestamp(timeSource)
 
     return ConversationItem(
         id = id,
@@ -174,4 +164,23 @@ private fun Conversation.toConversationItem(): ConversationItem {
         lastMessageTime = timestamp,
         avatarUrl = ""
     )
+}
+
+private fun parseTimestamp(value: String): Long {
+    val formats = listOf(
+        "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+        "yyyy-MM-dd'T'HH:mm:ss'Z'",
+        "yyyy-MM-dd'T'HH:mm:ssXXX",
+        "yyyy-MM-dd HH:mm:ss",
+        "yyyy-MM-dd HH:mm:ss.SSS"
+    )
+    for (fmt in formats) {
+        try {
+            return java.text.SimpleDateFormat(fmt, java.util.Locale.US)
+                .parse(value)?.time ?: continue
+        } catch (_: Exception) {
+            continue
+        }
+    }
+    return System.currentTimeMillis()
 }
