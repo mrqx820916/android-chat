@@ -106,10 +106,10 @@
                     android:textColor="@color/text_primary" />
 
                 <TextView
+                    android:id="@+id/tvAppVersion"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="轻聊 v1.1.0\n私密聊天平台"
                     android:textSize="14sp"
                     android:textColor="@color/text_secondary" />
 

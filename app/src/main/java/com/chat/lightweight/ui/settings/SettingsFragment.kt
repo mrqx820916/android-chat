@@ -38,6 +38,8 @@ class SettingsFragment : Fragment() {
 
         preferencesManager = PreferencesManager.getInstance(requireContext())
 
+        binding.tvAppVersion.text = "轻聊 v${com.chat.lightweight.BuildConfig.VERSION_NAME}\n私密聊天平台"
+
         setupClickListeners()
         observePermissions()
     }
