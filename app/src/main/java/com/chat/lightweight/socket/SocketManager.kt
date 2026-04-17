@@ -291,7 +291,7 @@ class SocketManager(private val eventListener: SocketEventListener) {
                 id = json.optString("id"),
                 conversation_id = json.optString("conversation_id"),
                 sender_id = json.optString("sender_id"),
-                sender_name = json.optString("sender_name"),
+                sender_name = json.optString("username").ifBlank { json.optString("sender_name") },
                 content = json.optString("content"),
                 message_type = json.optString("message_type", "text"),
                 file_url = json.optString("file_url").ifBlank { null },

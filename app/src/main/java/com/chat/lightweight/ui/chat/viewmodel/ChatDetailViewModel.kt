@@ -372,6 +372,11 @@ class ChatDetailViewModel(
             // 添加新消息
             addMessage(messageItem)
         }
+
+        // 收到对方的消息时，自动标记已读
+        if (event.sender_id != currentUserId) {
+            markAsRead()
+        }
     }
 
     /**

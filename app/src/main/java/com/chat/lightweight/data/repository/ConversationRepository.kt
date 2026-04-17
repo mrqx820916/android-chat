@@ -108,7 +108,8 @@ class ConversationRepository(
      */
     suspend fun markConversationRead(conversationId: String): Result<Unit> {
         return try {
-            when (networkRepository.markConversationRead(conversationId)) {
+            val userId = preferencesManager.getUserId() ?: ""
+            when (networkRepository.markConversationRead(conversationId, userId)) {
                 is com.chat.lightweight.network.ApiResponse.Success -> {
                     Result.success(Unit)
                 }
